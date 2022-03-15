@@ -1,4 +1,4 @@
-package fr.lernejo;
+package fr.lernejo.navy_battle;
 
 import com.sun.net.httpserver.HttpServer;
 

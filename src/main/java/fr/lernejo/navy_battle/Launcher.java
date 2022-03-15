@@ -21,16 +21,16 @@ public class Launcher {
         UUID id = UUID.randomUUID();
         gameContext.put("my_id", id.toString());
         gameContext.put("my_port", String.valueOf(port));
-        StartServer(port);
+        StartServer(port, gameContext);
 
     }
 
-    private static void StartServer(int port) throws IOException {
+    private static void StartServer(int port, Map<String, String> gameContext) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         ExecutorService executorService = new ThreadPoolExecutor(1, 1, 1000, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
-//        server.createContext("/api/game/start", new StartHandler(gameContext));
+        server.createContext("/api/game/start", new StartHandler(gameContext));
 //        server.createContext("/api/game/fire", new FireHandler());
         server.setExecutor(executorService);
         server.start();

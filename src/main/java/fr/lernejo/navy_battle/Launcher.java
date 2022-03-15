@@ -25,7 +25,7 @@ public class Launcher {
         if (args.length == 2) {
             GameClient.StartClient(id.toString(), String.valueOf(port), args[1]);
             //testfire
-//            FireClient(args[1]);
+            GameClient.FireClient(args[1], "F5");
         }
 
     }
@@ -36,7 +36,7 @@ public class Launcher {
             new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
         server.createContext("/api/game/start", new StartHandler(gameContext));
-//        server.createContext("/api/game/fire", new FireHandler());
+        server.createContext("/api/game/fire", new FireHandler());
         server.setExecutor(executorService);
         server.start();
     }

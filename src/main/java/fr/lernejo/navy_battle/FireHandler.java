@@ -19,13 +19,14 @@ public class FireHandler implements HttpHandler {
 //        try (OutputStream os = exchange.getResponseBody()) { // (1)
 //            os.write(body.getBytes());
 //        }
-        Reponse(exchange);
+        Response(exchange);
     }
 
-    private void Reponse(HttpExchange exchange) throws IOException {
+    private void Response(HttpExchange exchange) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ReponseMessage map = new ReponseMessage(EnumConsequence.valueOf("miss"), true);
+        ResponseMessage map = new ResponseMessage(EnumConsequence.valueOf("miss"), true);
         String json = mapper.writeValueAsString(map);
+        exchange.getResponseHeaders().add("Content-type", "application/json");
         exchange.sendResponseHeaders(202, json.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(json.getBytes());

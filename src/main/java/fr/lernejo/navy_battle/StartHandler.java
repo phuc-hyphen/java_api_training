@@ -22,7 +22,7 @@ public class StartHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
-            Reponse(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
+            Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
         } else {
             Not_Found(exchange);
         }
@@ -51,7 +51,7 @@ public class StartHandler implements HttpHandler {
         System.out.println(gameContext.get("adv_url"));
     }
 
-    private void Reponse(HttpExchange exchange, String id, String port, String mess) throws IOException {
+    private void Response(HttpExchange exchange, String id, String port, String mess) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StartMessage map = new StartMessage(id, "http://localhost:" + port, mess);
         String json = mapper.writeValueAsString(map);

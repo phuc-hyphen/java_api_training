@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class Launcher {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
         if (args.length < 1)
             return;
@@ -22,6 +22,11 @@ public class Launcher {
         gameContext.put("my_id", id.toString());
         gameContext.put("my_port", String.valueOf(port));
         StartServer(port, gameContext);
+        if (args.length == 2) {
+            GameClient.StartClient(id.toString(), String.valueOf(port), args[1]);
+            //testfire
+//            FireClient(args[1]);
+        }
 
     }
 

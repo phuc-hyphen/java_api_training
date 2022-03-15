@@ -21,21 +21,25 @@ public class StartHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         if (method.equals("POST")) {
-            try {
-                InputStream post_reponse = exchange.getRequestBody();
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                StartMessage jsonMap = objectMapper.readValue(post_reponse, StartMessage.class);
-                String message = jsonMap.message();
-                gameContext.put("adv_id", jsonMap.id());
-                gameContext.put("adv_url", jsonMap.url());
-                Print_Info(message);
-            } catch (IOException e) {
-                Bad_resquest(exchange);
-            }
+            CheckAndGetData(exchange);
             Reponse(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
         } else {
             Not_Found(exchange);
+        }
+    }
+
+    private void CheckAndGetData(HttpExchange exchange) throws IOException {
+        try {
+            InputStream post_reponse = exchange.getRequestBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            StartMessage jsonMap = objectMapper.readValue(post_reponse, StartMessage.class);
+            String message = jsonMap.message();
+            gameContext.put("adv_id", jsonMap.id());
+            gameContext.put("adv_url", jsonMap.url());
+            Print_Info(message);
+        } catch (IOException e) {
+            Bad_resquest(exchange);
         }
     }
 

@@ -23,13 +23,14 @@ public class StartHandler implements HttpHandler {
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
-            try {
-                GameClient.FireClient(gameContext.get("adv_url"), "F5");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             Not_Found(exchange);
+        }
+        try {
+            Thread.sleep(1000);
+            GameClient.FireClient(gameContext.get("adv_url"), "F5");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

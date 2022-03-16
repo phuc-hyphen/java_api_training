@@ -7,8 +7,15 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.Map;
 
 public class FireHandler implements HttpHandler {
+    private final Map<String, String> gameContext;
+
+    public FireHandler(Map<String, String> gameContext) {
+        this.gameContext = gameContext;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
@@ -16,16 +23,22 @@ public class FireHandler implements HttpHandler {
             URI uri = exchange.getRequestURI();
             String body = uri.toString();
             Cell cell = getParamMap(uri.toString());
-//        System.out.println(cell.toString());
 //        exchange.sendResponseHeaders(200, body.length());
 //        try (OutputStream os = exchange.getResponseBody()) { // (1)
 //            os.write(body.getBytes());
 //        }
+            Print_Info();
             Response(exchange);
+
         } else
             Not_Found(exchange);
+    }
 
-
+    private void Print_Info() {
+        System.out.println(gameContext.get("my_id"));
+        System.out.println(gameContext.get("my_port"));
+        System.out.println(gameContext.get("adv_id"));
+        System.out.println(gameContext.get("adv_url"));
     }
 
     private void Response(HttpExchange exchange) throws IOException {

@@ -18,12 +18,14 @@ public class Launcher {
         if (args.length < 1)
             return;
         int port = get_port(args);
-        UUID id = UUID.randomUUID();
-        gameContext.put("my_id", id.toString());
+//        UUID id = UUID.randomUUID();
+        gameContext.put("my_id", UUID.randomUUID().toString());
         gameContext.put("my_port", String.valueOf(port));
         StartServer(port, gameContext);
         if (args.length == 2) {
-            GameClient.StartClient(id.toString(), String.valueOf(port), args[1]);
+            gameContext.put("adv_url", args[1]);
+
+            GameClient.StartClient(args[1], gameContext);
             //testfire
 //            GameClient.FireClient(args[1], "F5");
         }
@@ -36,7 +38,7 @@ public class Launcher {
             new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
         server.createContext("/api/game/start", new StartHandler(gameContext));
-        server.createContext("/api/game/fire", new FireHandler());
+        server.createContext("/api/game/fire", new FireHandler(gameContext));
         server.setExecutor(executorService);
         server.start();
     }

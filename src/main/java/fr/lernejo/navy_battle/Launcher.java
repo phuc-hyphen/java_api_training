@@ -25,7 +25,7 @@ public class Launcher {
         if (args.length == 2) {
             GameClient.StartClient(id.toString(), String.valueOf(port), args[1]);
             //testfire
-            GameClient.FireClient(args[1], "F5");
+//            GameClient.FireClient(args[1], "F5");
         }
 
     }

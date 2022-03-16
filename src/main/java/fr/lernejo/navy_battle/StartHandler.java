@@ -24,7 +24,6 @@ public class StartHandler implements HttpHandler {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
             try {
-                System.out.println(gameContext.get("adv_url"));
                 GameClient.FireClient(gameContext.get("adv_url"), "F5");
             } catch (InterruptedException e) {
                 e.printStackTrace();

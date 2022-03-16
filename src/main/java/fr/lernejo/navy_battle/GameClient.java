@@ -20,8 +20,9 @@ public class GameClient {
         System.out.println(response.body());
     }
 
-    public static void FireClient(String adv_url,String pos) throws IOException, InterruptedException {
+    public static void FireClient(String adv_url, String pos) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
+//        System.out.println(adv_url);
         HttpRequest getRequest = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/fire?cell=" + pos))
             .setHeader("Content-Type", "application/json")

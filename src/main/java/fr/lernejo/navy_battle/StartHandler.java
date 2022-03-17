@@ -12,9 +12,11 @@ import java.util.Map;
 
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
+    private final GameClient client;
 
-    public StartHandler(Map<String, String> gameContext) {
+    public StartHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
+        this.client = client;
     }
 
     @Override
@@ -26,9 +28,13 @@ public class StartHandler implements HttpHandler {
         } else {
             Not_Found(exchange);
         }
+        FirstShot();
+    }
+
+    private void FirstShot() throws IOException {
         try {
-            Thread.sleep(1000);
-            GameClient.FireClient(gameContext.get("adv_url"), "F5");
+            Thread.sleep(3000);
+            client.FireClient(gameContext.get("adv_url"), "F5");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

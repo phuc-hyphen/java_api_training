@@ -27,9 +27,8 @@ public class FireHandler implements HttpHandler {
 //        try (OutputStream os = exchange.getResponseBody()) { // (1)
 //            os.write(body.getBytes());
 //        }
-            Print_Info();
+//            Print_Info();
             Response(exchange);
-
         } else
             Not_Found(exchange);
     }
@@ -56,7 +55,7 @@ public class FireHandler implements HttpHandler {
         if (query == null || query.isEmpty()) return null;
         String cell = query.substring(query.lastIndexOf("=") + 1, query.length());
         System.out.println(cell);
-        return new Cell(cell.charAt(0), cell.charAt(1));
+        return new Cell((int) cell.charAt(0) - 'A' + 1, Integer.parseInt(String.valueOf(cell.charAt(1))) - 1);
     }
 
     private void Not_Found(HttpExchange exchange) throws IOException {

@@ -15,29 +15,25 @@ import java.util.concurrent.TimeUnit;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
+        GameClient gameClient = new GameClient();
         if (args.length < 1)
             return;
         int port = get_port(args);
-//        UUID id = UUID.randomUUID();
         gameContext.put("my_id", UUID.randomUUID().toString());
         gameContext.put("my_port", String.valueOf(port));
-        StartServer(port, gameContext);
+        StartServer(port, gameContext, gameClient);
         if (args.length == 2) {
             gameContext.put("adv_url", args[1]);
-
-            GameClient.StartClient(args[1], gameContext);
-            //testfire
-//            GameClient.FireClient(args[1], "F5");
+            gameClient.StartGame(args[1], gameContext);
         }
-
     }
 
-    private static void StartServer(int port, Map<String, String> gameContext) throws IOException {
+    private static void StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         ExecutorService executorService = new ThreadPoolExecutor(1, 1, 1000, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
-        server.createContext("/api/game/start", new StartHandler(gameContext));
+        server.createContext("/api/game/start", new StartHandler(gameContext, client));
         server.createContext("/api/game/fire", new FireHandler(gameContext));
         server.setExecutor(executorService);
         server.start();

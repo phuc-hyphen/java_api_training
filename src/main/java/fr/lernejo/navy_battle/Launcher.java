@@ -7,36 +7,38 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
-        GameClient gameClient = new GameClient();
+        final GameClient gameClient = new GameClient();
         if (args.length < 1)
             return;
-        int port = get_port(args);
         gameContext.put("my_id", UUID.randomUUID().toString());
-        gameContext.put("my_port", String.valueOf(port));
-        StartServer(port, gameContext, gameClient);
+        gameContext.put("my_port", String.valueOf(get_port(args)));
+        CountDownLatch count = StartServer(get_port(args), gameContext, gameClient);
         if (args.length == 2) {
             gameContext.put("adv_url", args[1]);
             gameClient.StartGame(args[1], gameContext);
         }
+        count.await(); // wait until `c.countDown()` is invoked
+        gameClient.FireClient(gameContext.get("adv_url"), "F5");
     }
 
-    private static void StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException {
+    private static CountDownLatch StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException, InterruptedException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 1000, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<Runnable>());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        final CountDownLatch count = new CountDownLatch(1); // allows one or more threads to wait until a set of operations being performed in other threads completes.
+
+//        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 2000, TimeUnit.MILLISECONDS,
+//            new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
-        server.createContext("/api/game/start", new StartHandler(gameContext, client));
+        server.createContext("/api/game/start", new StartHandler(gameContext, client, count));
         server.createContext("/api/game/fire", new FireHandler(gameContext));
         server.setExecutor(executorService);
         server.start();
+        return count;
     }
 
     private static int get_port(String[] args) {

@@ -9,14 +9,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
+    private final CountDownLatch count;
 
-    public StartHandler(Map<String, String> gameContext, GameClient client) {
+    public StartHandler(Map<String, String> gameContext, GameClient client, CountDownLatch c) {
         this.gameContext = gameContext;
         this.client = client;
+        this.count = c;
     }
 
     @Override
@@ -25,15 +28,16 @@ public class StartHandler implements HttpHandler {
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
+            count.countDown();
         } else {
             Not_Found(exchange);
         }
-        FirstShot();
+//        FirstShot();
     }
 
     private void FirstShot() throws IOException {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             client.FireClient(gameContext.get("adv_url"), "F5");
         } catch (InterruptedException e) {
             e.printStackTrace();

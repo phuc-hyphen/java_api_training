@@ -45,6 +45,7 @@ public class GameClient {
 //        System.out.println(adv_url);
         HttpRequest getRequest = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/fire?cell=" + pos))
+            .setHeader("Accept", "application/json")
             .setHeader("Content-Type", "application/json")
             .GET()
             .build();

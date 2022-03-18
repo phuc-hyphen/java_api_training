@@ -12,8 +12,8 @@ import java.util.concurrent.*;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
-        final GameClient gameClient = new GameClient();
         final BattleField battleField = new BattleField();
+        final GameClient gameClient = new GameClient(battleField);
         if (args.length < 1)
             return;
         gameContext.put("my_id", UUID.randomUUID().toString());
@@ -30,7 +30,7 @@ public class Launcher {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         server.createContext("/ping", new PingHandler());
         server.createContext("/api/game/start", new StartHandler(gameContext, client, battleField));
-        server.createContext("/api/game/fire", new FireHandler(gameContext));
+        server.createContext("/api/game/fire", new FireHandler(gameContext, battleField));
         server.setExecutor(executorService);
         server.start();
     }

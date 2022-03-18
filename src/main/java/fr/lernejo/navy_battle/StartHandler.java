@@ -13,7 +13,7 @@ import java.util.Map;
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-    public final BattleField battleField;
+    private final BattleField battleField;
 
     public StartHandler(Map<String, String> gameContext, GameClient client, BattleField battleField) {
         this.gameContext = gameContext;
@@ -86,7 +86,7 @@ public class StartHandler implements HttpHandler {
             code = 404;
         }
         exchange.sendResponseHeaders(code, body.length());
-        try (OutputStream os = exchange.getResponseBody()) { // (1)
+        try (OutputStream os = exchange.getResponseBody()) { // important
             os.write(body.getBytes());
         }
     }

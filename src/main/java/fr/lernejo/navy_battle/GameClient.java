@@ -13,9 +13,13 @@ import java.util.Map;
 
 public class GameClient {
     private final HttpClient client = HttpClient.newHttpClient();
+    private final BattleField battleField;
+
+    public GameClient(BattleField battleField) {
+        this.battleField = battleField;
+    }
 
     public void StartGame(String adv_url, Map<String, String> gameContext) throws IOException, InterruptedException {
-
         HttpRequest requetePost = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/start"))
             .setHeader("Accept", "application/json")
@@ -24,6 +28,7 @@ public class GameClient {
             .build();
         HttpResponse<String> response = client.send(requetePost, HttpResponse.BodyHandlers.ofString());
         ExtracteData(gameContext, response);
+        battleField.InitialSea();
     }
 
     private void ExtracteData(Map<String, String> gameContext, HttpResponse<String> response) throws JsonProcessingException {

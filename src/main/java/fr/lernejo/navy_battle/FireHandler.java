@@ -11,9 +11,11 @@ import java.util.Map;
 
 public class FireHandler implements HttpHandler {
     private final Map<String, String> gameContext;
+    private final BattleField battleField;
 
-    public FireHandler(Map<String, String> gameContext) {
+    public FireHandler(Map<String, String> gameContext, BattleField battleField) {
         this.gameContext = gameContext;
+        this.battleField = battleField;
     }
 
     @Override
@@ -21,14 +23,15 @@ public class FireHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
             URI uri = exchange.getRequestURI();
-            String body = uri.toString();
             Cell cell = getParamMap(uri.toString());
-//        exchange.sendResponseHeaders(200, body.length());
-//        try (OutputStream os = exchange.getResponseBody()) { // (1)
-//            os.write(body.getBytes());
-//        }
-//            Print_Info();
-            Response(exchange);
+            String consequence = "miss";
+            if (battleField.HitCheck(cell)) {
+                consequence = "hit";
+                if (battleField.SunkCheck()) {
+                    consequence = "sunk";
+                }
+            }
+            Response(exchange, consequence);
         } else
             Not_Found(exchange);
     }
@@ -40,9 +43,9 @@ public class FireHandler implements HttpHandler {
         System.out.println(gameContext.get("adv_url"));
     }
 
-    private void Response(HttpExchange exchange) throws IOException {
+    private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResponseMessage map = new ResponseMessage(EnumConsequence.valueOf("miss"), true);
+        ResponseMessage map = new ResponseMessage(consequence, battleField.ShipLeft());
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Content-type", "application/json");
         exchange.sendResponseHeaders(202, json.length());

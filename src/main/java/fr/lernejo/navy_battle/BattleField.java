@@ -32,6 +32,8 @@ public class BattleField {
 //            && !contreTorpilleurMap.containsValue(false) && !contreTorpilleur2Map.containsValue(false);
     }
 
+    //true : hit
+    //false: miss
     public Cell RandomShot() { // get random cell
         Random rand = new Random();
         Cell cell;
@@ -50,26 +52,34 @@ public class BattleField {
     }
 
     private boolean IfCellHit(Cell cell, Map<Cell, Boolean> ship) { // check if the cell hit the ship and get the received cell
-        boolean check = false;
+        boolean hit = false;
         if (ship.containsKey(cell) && !received.contains(cell)) {
             ship.replace(cell, false, true);
+            hit = true;
             received.add(cell);
-            check = true;
         }
-        return check;
+        return hit;
     }
 
     public boolean SunkCheck() { // check if any ship is sunk
-        return IfShipSunk(porteAvionMap) || IfShipSunk(croiseurMap) ||
-            IfShipSunk(torpilleurMap) || IfShipSunk(contreTorpilleurMap) || IfShipSunk(contreTorpilleur2Map);
+        if (IfShipSunk(porteAvionMap))
+            return true;
+        if (IfShipSunk(croiseurMap))
+            return true;
+        if (IfShipSunk(torpilleurMap))
+            return true;
+        if (IfShipSunk(contreTorpilleurMap))
+            return true;
+        else return IfShipSunk(contreTorpilleur2Map);
+//        return IfShipSunk(porteAvionMap) || IfShipSunk(croiseurMap) ||
+//            IfShipSunk(torpilleurMap) || IfShipSunk(contreTorpilleurMap) || IfShipSunk(contreTorpilleur2Map);
     }
 
     private boolean IfShipSunk(Map<Cell, Boolean> ship) { // check if the ship is sunk
-        boolean sunk = false;
         if (!sunkShips.contains(ship) && !ship.containsValue(false)) {
             sunkShips.add(ship);
-            sunk = true;
+            return true;
         }
-        return sunk;
+        return false;
     }
 }

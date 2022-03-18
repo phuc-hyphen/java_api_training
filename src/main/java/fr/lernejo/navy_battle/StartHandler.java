@@ -32,7 +32,7 @@ public class StartHandler implements HttpHandler {
             Not_Found(exchange);
         }
         FirstShot();
-        battleField.InitialSea();
+//        battleField.InitialSea();
     }
 
     private void FirstShot() throws IOException {
@@ -40,7 +40,8 @@ public class StartHandler implements HttpHandler {
             Thread.sleep(1000);
             Cell cell = battleField.RandomShot();
             System.out.println(cell.x());
-            String pos = getCharForNumber(cell.x()) + cell.y();
+//            String pos = getCharForNumber(cell.x()) + cell.y();
+            String pos = "F5";
             client.Fire(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {
             e.printStackTrace();

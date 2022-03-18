@@ -13,28 +13,23 @@ public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
         final GameClient gameClient = new GameClient();
+        final BattleField battleField= new BattleField();
         if (args.length < 1)
             return;
         gameContext.put("my_id", UUID.randomUUID().toString());
         gameContext.put("my_port", String.valueOf(get_port(args)));
-        StartServer(get_port(args), gameContext, gameClient);
+        StartServer(get_port(args), gameContext, gameClient, battleField);
         if (args.length == 2) {
             gameContext.put("adv_url", args[1]);
             gameClient.StartGame(args[1], gameContext);
         }
-//        count.await(); // wait until `c.countDown()` is invoked
-//        gameClient.FireClient(gameContext.get("adv_url"), "F5");
     }
 
-    private static void StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException, InterruptedException {
+    private static void StartServer(int port, Map<String, String> gameContext, GameClient client,BattleField field) throws IOException, InterruptedException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-//        final CountDownLatch count = new CountDownLatch(1); // allows one or more threads to wait until a set of operations being performed in other threads completes.
-
-//        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 2000, TimeUnit.MILLISECONDS,
-//            new LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
-        server.createContext("/api/game/start", new StartHandler(gameContext, client));
+        server.createContext("/api/game/start", new StartHandler(gameContext, client, field));
         server.createContext("/api/game/fire", new FireHandler(gameContext));
         server.setExecutor(executorService);
         server.start();

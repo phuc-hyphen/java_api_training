@@ -9,17 +9,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-//    private final CountDownLatch count;
+    private final BattleField battleField;
 
-    public StartHandler(Map<String, String> gameContext, GameClient client) {
+
+    public StartHandler(Map<String, String> gameContext, GameClient client, BattleField battleField) {
         this.gameContext = gameContext;
         this.client = client;
-//        this.count = c;
+        this.battleField = battleField;
     }
 
     @Override
@@ -27,18 +27,21 @@ public class StartHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
-            Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
-//            count.countDown();
+            Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
         } else {
             Not_Found(exchange);
         }
-//        FirstShot();
+        FirstShot();
+        battleField.InitialSea();
     }
 
     private void FirstShot() throws IOException {
         try {
             Thread.sleep(1000);
-            client.FireClient(gameContext.get("adv_url"), "F5");
+            Cell cell = battleField.RandomShot();
+            System.out.println(cell.x());
+            String pos = getCharForNumber(cell.x()) + cell.y();
+            client.Fire(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -67,9 +70,9 @@ public class StartHandler implements HttpHandler {
         System.out.println(gameContext.get("adv_url"));
     }
 
-    private void Response(HttpExchange exchange, String id, String port, String mess) throws IOException {
+    private void Response(HttpExchange exchange, String id, String port) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        StartMessage map = new StartMessage(id, "http://localhost:" + port, mess);
+        StartMessage map = new StartMessage(id, "http://localhost:" + port, "May the best code win");
         String json = mapper.writeValueAsString(map);
         exchange.sendResponseHeaders(202, json.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
@@ -91,5 +94,9 @@ public class StartHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(body.getBytes());
         }
+    }
+
+    private String getCharForNumber(int i) {
+        return i > 0 && i < 27 ? String.valueOf((char) (i + 64)) : null;
     }
 }

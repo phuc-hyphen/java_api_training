@@ -14,12 +14,12 @@ import java.util.concurrent.CountDownLatch;
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-    private final CountDownLatch count;
+//    private final CountDownLatch count;
 
-    public StartHandler(Map<String, String> gameContext, GameClient client, CountDownLatch c) {
+    public StartHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
         this.client = client;
-        this.count = c;
+//        this.count = c;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class StartHandler implements HttpHandler {
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"), "May the best code win");
-            count.countDown();
+//            count.countDown();
         } else {
             Not_Found(exchange);
         }

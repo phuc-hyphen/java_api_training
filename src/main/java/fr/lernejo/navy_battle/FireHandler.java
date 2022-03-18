@@ -39,7 +39,7 @@ public class FireHandler implements HttpHandler {
         ObjectMapper mapper = new ObjectMapper();
         ResponseMessage map = new ResponseMessage(EnumConsequence.valueOf("miss"), true);
         String json = mapper.writeValueAsString(map);
-        exchange.getResponseHeaders().add("Content-type", "application/json");
+//        exchange.getResponseHeaders().add("Content-type", "application/json");
 //        exchange.getResponseHeaders().add("Accept", "application/json");
         exchange.sendResponseHeaders(202, json.length());
     }

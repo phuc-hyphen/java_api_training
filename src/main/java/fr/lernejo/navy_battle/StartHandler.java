@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Map;
 
 public class StartHandler implements HttpHandler {
@@ -33,33 +30,16 @@ public class StartHandler implements HttpHandler {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
         } else {
-            Not_Found(exchange);
+            Bad_resquest(exchange, true);
         }
-//        FirstShot();
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest getRequest = HttpRequest.newBuilder()
-            .uri(URI.create(gameContext.get("adv_url") + "/api/game/fire?cell=" + "F5"))
-//            .setHeader("Accept", "application/json")
-            .setHeader("Content-Type", "application/json")
-            .GET()
-            .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        assert response != null;
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
-
+        FirstShot();
         battleField.InitialSea();
     }
 
     private void FirstShot() throws IOException {
         try {
             Thread.sleep(500);
-            Cell cell = battleField.RandomShot();
+//            Cell cell = battleField.RandomShot();
 //            System.out.println(cell.x());
 //            String pos = getCharForNumber(cell.x()) + cell.y();
             String pos = "F5";
@@ -80,7 +60,7 @@ public class StartHandler implements HttpHandler {
             gameContext.put("adv_url", jsonMap.url());
             Print_Info(message);
         } catch (IOException e) {
-            Bad_resquest(exchange);
+            Bad_resquest(exchange, false);
         }
     }
 
@@ -102,17 +82,14 @@ public class StartHandler implements HttpHandler {
         }
     }
 
-    private void Bad_resquest(HttpExchange exchange) throws IOException {
-        String body = "Bad Request";
-        exchange.sendResponseHeaders(400, body.length());
-        try (OutputStream os = exchange.getResponseBody()) { // (1)
-            os.write(body.getBytes());
+    private void Bad_resquest(HttpExchange exchange, boolean NotFound) throws IOException {
+        String body;
+        if (NotFound) {
+            body = "Not Found";
+        } else {
+            body = "Bad Request";
         }
-    }
-
-    private void Not_Found(HttpExchange exchange) throws IOException {
-        String body = "Not Found";
-        exchange.sendResponseHeaders(404, body.length());
+        exchange.sendResponseHeaders(400, body.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(body.getBytes());
         }

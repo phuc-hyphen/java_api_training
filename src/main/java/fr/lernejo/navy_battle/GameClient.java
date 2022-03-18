@@ -12,14 +12,10 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 public class GameClient {
-    public final HttpClient client ;
-
-    public GameClient(HttpClient client) {
-        this.client = client;
-    }
-
+    private final HttpClient client = HttpClient.newHttpClient();
 
     public void StartGame(String adv_url, Map<String, String> gameContext) throws IOException, InterruptedException {
+
         HttpRequest requetePost = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/start"))
             .setHeader("Accept", "application/json")
@@ -46,10 +42,11 @@ public class GameClient {
         System.out.println(gameContext.get("adv_url"));
     }
 
-    public void Fire(String adv_url, String pos) throws IOException, InterruptedException {
+    public void FireClient(String adv_url, String pos) throws IOException, InterruptedException {
+//        System.out.println(adv_url);
         HttpRequest getRequest = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/fire?cell=" + pos))
-//            .setHeader("Accept", "application/json")
+            .setHeader("Accept", "application/json")
             .setHeader("Content-Type", "application/json")
             .GET()
             .build();

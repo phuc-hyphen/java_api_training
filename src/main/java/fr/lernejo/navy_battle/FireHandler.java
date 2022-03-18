@@ -21,7 +21,12 @@ public class FireHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
             URI uri = exchange.getRequestURI();
+            String body = uri.toString();
             Cell cell = getParamMap(uri.toString());
+//        exchange.sendResponseHeaders(200, body.length());
+//        try (OutputStream os = exchange.getResponseBody()) { // (1)
+//            os.write(body.getBytes());
+//        }
 //            Print_Info();
             Response(exchange);
         } else
@@ -39,9 +44,11 @@ public class FireHandler implements HttpHandler {
         ObjectMapper mapper = new ObjectMapper();
         ResponseMessage map = new ResponseMessage(EnumConsequence.valueOf("miss"), true);
         String json = mapper.writeValueAsString(map);
-//        exchange.getResponseHeaders().add("Content-type", "application/json");
-//        exchange.getResponseHeaders().add("Accept", "application/json");
+        exchange.getResponseHeaders().add("Content-type", "application/json");
         exchange.sendResponseHeaders(202, json.length());
+        try (OutputStream os = exchange.getResponseBody()) { // (1)
+            os.write(json.getBytes());
+        }
     }
 
     public static Cell getParamMap(String query) { // get cell
@@ -58,5 +65,4 @@ public class FireHandler implements HttpHandler {
             os.write(body.getBytes());
         }
     }
-
 }

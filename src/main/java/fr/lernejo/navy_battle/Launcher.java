@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,7 +13,7 @@ import java.util.concurrent.*;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
-        final GameClient gameClient = new GameClient();
+        final GameClient gameClient = new GameClient(HttpClient.newHttpClient());
         final BattleField battleField= new BattleField();
         if (args.length < 1)
             return;

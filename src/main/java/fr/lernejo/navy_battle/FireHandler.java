@@ -40,8 +40,8 @@ public class FireHandler implements HttpHandler {
         ResponseMessage map = new ResponseMessage(EnumConsequence.valueOf("miss"), true);
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Content-type", "application/json");
+//        exchange.getResponseHeaders().add("Accept", "application/json");
         exchange.sendResponseHeaders(202, json.length());
-
     }
 
     public static Cell getParamMap(String query) { // get cell

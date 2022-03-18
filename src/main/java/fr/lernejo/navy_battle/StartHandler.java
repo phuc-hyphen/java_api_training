@@ -8,6 +8,10 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Map;
 
 public class StartHandler implements HttpHandler {
@@ -31,15 +35,32 @@ public class StartHandler implements HttpHandler {
         } else {
             Not_Found(exchange);
         }
-        FirstShot();
-//        battleField.InitialSea();
+//        FirstShot();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest getRequest = HttpRequest.newBuilder()
+            .uri(URI.create(gameContext.get("adv_url") + "/api/game/fire?cell=" + "F5"))
+//            .setHeader("Accept", "application/json")
+            .setHeader("Content-Type", "application/json")
+            .GET()
+            .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assert response != null;
+        System.out.println(response.statusCode());
+        System.out.println(response.body());
+
+        battleField.InitialSea();
     }
 
     private void FirstShot() throws IOException {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             Cell cell = battleField.RandomShot();
-            System.out.println(cell.x());
+//            System.out.println(cell.x());
 //            String pos = getCharForNumber(cell.x()) + cell.y();
             String pos = "F5";
             client.Fire(gameContext.get("adv_url"), pos);

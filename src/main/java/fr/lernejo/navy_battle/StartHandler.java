@@ -13,12 +13,10 @@ import java.util.Map;
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-    private final BattleField battleField;
 
-    public StartHandler(Map<String, String> gameContext, GameClient client, BattleField battleField) {
+    public StartHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
         this.client = client;
-        this.battleField = battleField;
     }
 
     @Override
@@ -30,15 +28,15 @@ public class StartHandler implements HttpHandler {
         } else {
             BadRequest(exchange, true);
         }
-        battleField.InitialSea();
+        client.battleField.InitialSea();
         FirstShot();
     }
 
     private void FirstShot() throws IOException {
         try {
-            Thread.sleep(1000);
-            Cell firstShot = battleField.RandomShot();
-            String pos = getCharForNumber(firstShot.x()) + firstShot.y();
+            Thread.sleep(500);
+            Cell firstShot = client.battleField.GetRandomCell();
+            String pos = client.utils.getCharForNumber(firstShot.x()) + firstShot.y();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -54,18 +52,10 @@ public class StartHandler implements HttpHandler {
             String message = jsonMap.message();
             gameContext.put("adv_id", jsonMap.id());
             gameContext.put("adv_url", jsonMap.url());
-            Print_Info(message);
+            client.utils.PrintInfo(gameContext, message);
         } catch (IOException e) {
             BadRequest(exchange, false);
         }
-    }
-
-    private void Print_Info(String message) {
-        System.out.println(message);
-        System.out.println(gameContext.get("my_id"));
-        System.out.println(gameContext.get("my_port"));
-        System.out.println(gameContext.get("adv_id"));
-        System.out.println(gameContext.get("adv_url"));
     }
 
     private void Response(HttpExchange exchange, String id, String port) throws IOException {
@@ -89,9 +79,5 @@ public class StartHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) { // important
             os.write(body.getBytes());
         }
-    }
-
-    private String getCharForNumber(int i) {
-        return i > 0 && i < 27 ? String.valueOf((char) (i + 64)) : null;
     }
 }

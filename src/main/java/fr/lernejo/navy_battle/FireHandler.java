@@ -11,46 +11,61 @@ import java.util.Map;
 
 public class FireHandler implements HttpHandler {
     private final Map<String, String> gameContext;
-    private final BattleField battleField;
+    private final GameClient client;
 
-    public FireHandler(Map<String, String> gameContext, BattleField battleField) {
+    public FireHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
-        this.battleField = battleField;
+        this.client = client;
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+//        System.out.println("received");
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
-            URI uri = exchange.getRequestURI();
-            Cell cell = getParamMap(uri.toString());
-            String consequence = "miss";
-            if (battleField.HitCheck(cell)) {
-                consequence = "hit";
-                if (battleField.SunkCheck()) {
-                    consequence = "sunk";
-                }
-            }
+            String consequence = getConsequence(exchange);
             Response(exchange, consequence);
-        } else
+        } else {
             Not_Found(exchange);
+        }
+        NextShot();
     }
 
-    private void Print_Info() {
-        System.out.println(gameContext.get("my_id"));
-        System.out.println(gameContext.get("my_port"));
-        System.out.println(gameContext.get("adv_id"));
-        System.out.println(gameContext.get("adv_url"));
+    private String getConsequence(HttpExchange exchange) {
+        URI uri = exchange.getRequestURI();
+        Cell cell = getParamMap(uri.toString());
+//        System.out.println(uri.toString());
+        String consequence = "miss";
+        if (client.battleField.HitCheck(cell)) {
+            consequence = "hit";
+            if (client.battleField.SunkCheck()) {
+                consequence = "sunk";
+            }
+        }
+        return consequence;
     }
 
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResponseMessage map = new ResponseMessage(consequence, battleField.ShipLeft());
+        ResponseMessage map = new ResponseMessage(consequence, client.battleField.ShipLeft());
         String json = mapper.writeValueAsString(map);
+        exchange.getResponseHeaders().add("Accept", "application/json");
         exchange.getResponseHeaders().add("Content-type", "application/json");
         exchange.sendResponseHeaders(202, json.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(json.getBytes());
+        }
+    }
+
+    private void NextShot() throws IOException {
+        try {
+            Thread.sleep(1000);
+            Cell nextShot = client.battleField.GetRandomCell();
+            String pos = client.utils.getCharForNumber(nextShot.x()) + nextShot.y();
+            System.out.println(nextShot);
+            client.FireClient(gameContext.get("adv_url"), pos);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

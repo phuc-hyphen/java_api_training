@@ -18,19 +18,19 @@ public class Launcher {
             return;
         gameContext.put("my_id", UUID.randomUUID().toString());
         gameContext.put("my_port", args[0]);
-        StartServer(get_port(args), gameContext, gameClient, battleField);
+        StartServer(get_port(args), gameContext, gameClient);
         if (args.length == 2) {
             gameContext.put("adv_url", args[1]);
             gameClient.StartGame(args[1], gameContext);
         }
     }
 
-    private static void StartServer(int port, Map<String, String> gameContext, GameClient client, BattleField battleField) throws IOException {
+    private static void StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         server.createContext("/ping", new PingHandler());
-        server.createContext("/api/game/start", new StartHandler(gameContext, client, battleField));
-        server.createContext("/api/game/fire", new FireHandler(gameContext, battleField));
+        server.createContext("/api/game/start", new StartHandler(gameContext, client));
+        server.createContext("/api/game/fire", new FireHandler(gameContext, client));
         server.setExecutor(executorService);
         server.start();
     }

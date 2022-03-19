@@ -34,12 +34,12 @@ public class BattleField {
 
     //true : hit
     //false: miss
-    public Cell RandomShot() { // get random cell
+    public Cell GetRandomCell() { // get random cell
         Random rand = new Random();
         Cell cell;
         do {
-            int x = rand.nextInt(10);
-            int y = rand.nextInt(10);
+            int x = rand.nextInt(0, 10);
+            int y = rand.nextInt(0, 10);
             cell = new Cell(x, y);
         } while (fired.contains(cell));
         fired.add(cell);

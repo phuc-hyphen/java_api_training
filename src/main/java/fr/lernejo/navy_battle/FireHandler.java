@@ -54,7 +54,7 @@ public class FireHandler implements HttpHandler {
         }
     }
 
-    public static Cell getParamMap(String query) { // get cell
+    public Cell getParamMap(String query) { // get cell
         if (query == null || query.isEmpty()) return null;
         String cell = query.substring(query.lastIndexOf("=") + 1, query.length());
         System.out.println(cell);

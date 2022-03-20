@@ -26,15 +26,19 @@ public class FireHandler implements HttpHandler {
             String consequence = getConsequence(exchange);
             Response(exchange, consequence);
         } else {
-            Not_Found(exchange);
+            client.utils.BadRequest(exchange, true);
         }
-        NextShot();
+        if (client.battleField.ShipLeft()) {
+            NextShot();
+        } else {
+            System.out.println(gameContext.get("adv_url") + "win");
+        }
     }
 
     private String getConsequence(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
-        Cell cell = getParamMap(uri.toString());
-//        System.out.println(uri.toString());
+        Cell cell = client.utils.getParamMap(uri.toString());
+        System.out.println("received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
             consequence = "hit";
@@ -59,28 +63,13 @@ public class FireHandler implements HttpHandler {
 
     private void NextShot() throws IOException {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10);
             Cell nextShot = client.battleField.GetRandomCell();
-            String pos = client.utils.getCharForNumber(nextShot.x()) + nextShot.y();
-            System.out.println(nextShot);
+            System.out.println("send : " + nextShot);
+            String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    }
-
-    public Cell getParamMap(String query) { // get cell
-        if (query == null || query.isEmpty()) return null;
-        String cell = query.substring(query.lastIndexOf("=") + 1, query.length());
-        System.out.println(cell);
-        return new Cell((int) cell.charAt(0) - 'A' + 1, Integer.parseInt(String.valueOf(cell.charAt(1))) - 1);
-    }
-
-    private void Not_Found(HttpExchange exchange) throws IOException {
-        String body = "Not Found";
-        exchange.sendResponseHeaders(404, body.length());
-        try (OutputStream os = exchange.getResponseBody()) { // (1)
-            os.write(body.getBytes());
         }
     }
 }

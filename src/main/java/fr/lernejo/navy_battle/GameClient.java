@@ -15,6 +15,8 @@ public class GameClient {
     private final HttpClient client = HttpClient.newHttpClient();
     public final BattleField battleField;
     public final Utils utils = new Utils();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    public boolean win;
 
     public GameClient(BattleField battleField) {
         this.battleField = battleField;
@@ -48,7 +50,14 @@ public class GameClient {
             .GET()
             .build();
         HttpResponse<String> response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+//        System.out.println(response.statusCode());
+//        System.out.println(response.body());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ResponseMessage responseMap = objectMapper.readValue(response.body(), ResponseMessage.class);
+        System.out.println(responseMap);
+        if (!responseMap.shipLeft()) {
+            System.out.println("i'm Win");
+        }
     }
+
 }

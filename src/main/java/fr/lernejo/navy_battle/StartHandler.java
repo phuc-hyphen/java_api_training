@@ -25,18 +25,18 @@ public class StartHandler implements HttpHandler {
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
+            client.battleField.InitialSea();
+            FirstShot();
         } else {
-            BadRequest(exchange, true);
+            client.utils.BadRequest(exchange, true);
         }
-        client.battleField.InitialSea();
-        FirstShot();
     }
 
     private void FirstShot() throws IOException {
         try {
-            Thread.sleep(500);
+//            Thread.sleep(500);
             Cell firstShot = client.battleField.GetRandomCell();
-            String pos = client.utils.getCharForNumber(firstShot.x()) + firstShot.y();
+            String pos = client.utils.getCharForNumber(firstShot.col()) + firstShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -45,16 +45,16 @@ public class StartHandler implements HttpHandler {
 
     private void CheckAndGetData(HttpExchange exchange) throws IOException {
         try {
-            InputStream post_reponse = exchange.getRequestBody();
+            InputStream post_response = exchange.getRequestBody();
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            StartMessage jsonMap = objectMapper.readValue(post_reponse, StartMessage.class);
+            StartMessage jsonMap = objectMapper.readValue(post_response, StartMessage.class);
             String message = jsonMap.message();
             gameContext.put("adv_id", jsonMap.id());
             gameContext.put("adv_url", jsonMap.url());
             client.utils.PrintInfo(gameContext, message);
         } catch (IOException e) {
-            BadRequest(exchange, false);
+            client.utils.BadRequest(exchange, false);
         }
     }
 
@@ -68,16 +68,5 @@ public class StartHandler implements HttpHandler {
         }
     }
 
-    private void BadRequest(HttpExchange exchange, boolean notFound) throws IOException {
-        int code = 400;
-        String body = "Bad Request";
-        if (notFound) {
-            body = "Not Found";
-            code = 404;
-        }
-        exchange.sendResponseHeaders(code, body.length());
-        try (OutputStream os = exchange.getResponseBody()) { // important
-            os.write(body.getBytes());
-        }
-    }
+
 }

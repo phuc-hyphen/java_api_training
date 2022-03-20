@@ -16,10 +16,10 @@ public class Ship {
     public void AddLocations(Map<Cell, Boolean> sea) {
         for (int i = 0; i < size; i++) {
             if (orientation.equals("Vertical")) {
-                Cell cell = new Cell(startCell.x(), startCell.y() + i);
+                Cell cell = new Cell(startCell.col(), startCell.row() + i);
                 sea.put(cell, false);
             } else if (orientation.equals("Horizontal")) {
-                Cell cell = new Cell(startCell.x() + i, startCell.y());
+                Cell cell = new Cell(startCell.col() + i, startCell.row());
                 sea.put(cell, false);
             }
         }

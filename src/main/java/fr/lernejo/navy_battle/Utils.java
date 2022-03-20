@@ -41,4 +41,13 @@ public class Utils {
             os.write(body.getBytes());
         }
     }
+
+    public boolean CheckConsequence(String consequence) {
+        for (EnumConsequence con : EnumConsequence.values()) {
+            if (con.name().equals(consequence)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

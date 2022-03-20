@@ -12,10 +12,11 @@ import java.util.concurrent.*;
 public class Launcher {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, String> gameContext = new HashMap<String, String>();
-        final BattleField battleField = new BattleField();
-        final GameClient gameClient = new GameClient(battleField);
-        if (args.length < 1)
+        final GameClient gameClient = new GameClient(new BattleField());
+        if (args.length < 1) {
+            System.out.println("Argument missing ! \n For player 1: pass 1st argument as port number \n For player 2: pass 1st argument as port number and 2nd as player url");
             return;
+        }
         gameContext.put("my_id", UUID.randomUUID().toString());
         gameContext.put("my_port", args[0]);
         StartServer(get_port(args), gameContext, gameClient);

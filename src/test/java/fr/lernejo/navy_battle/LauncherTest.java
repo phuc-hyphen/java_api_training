@@ -1,21 +1,51 @@
 package fr.lernejo.navy_battle;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class LauncherTest {
+    @Test
+    void LauncherNOARGUMENTTests() throws InterruptedException {
+        // setting output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        PrintStream old = System.out;
+        System.setOut(ps);
+
+        String[] args = {};
+        IOException test = new IOException();
+        try {
+            Launcher.main(args);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:9876/ping"))
+                .build();
+            HttpResponse<String> response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            Assertions.assertThat(response.statusCode()).isNotEqualTo(200);
+
+        } catch (IOException e) {
+            test = e;
+        }
+
+        Assertions.assertThat(test).isNotNull();
+        // get out put
+        System.out.flush();
+        System.setOut(old);
+        Assertions.assertThat(baos.toString()).contains("Argument missing ! \n For player 1: pass 1st argument as port number \n For player 2: pass 1st argument as port number and 2nd as player url");
+
+    }
 
     @Test
     void PingTests() throws IOException, InterruptedException {
@@ -52,9 +82,9 @@ class LauncherTest {
         Assertions.assertThat(response.statusCode()).isEqualTo(202);
         Assertions.assertThat(jsonMap.message()).isEqualTo("May the best code win");
         Assertions.assertThat(jsonMap.url()).isEqualTo("http://localhost:1234");
-        try{
+        try {
             UUID uuid = UUID.fromString(jsonMap.id());
-        } catch (IllegalArgumentException exception){
+        } catch (IllegalArgumentException exception) {
             Assertions.assertThat(exception).isEqualTo(null);
         }
     }

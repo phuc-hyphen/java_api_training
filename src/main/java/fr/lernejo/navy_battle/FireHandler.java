@@ -51,7 +51,7 @@ public class FireHandler implements HttpHandler {
 
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResponseMessage map = new ResponseMessage(consequence, client.battleField.ShipLeft());
+        ResponseMessageFire map = new ResponseMessageFire(consequence, client.battleField.ShipLeft());
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Accept", "application/json");
         exchange.getResponseHeaders().add("Content-type", "application/json");

@@ -36,7 +36,7 @@ class UtilsTest {
     }
 
     @Test
-    void badresquesttest() throws IOException, InterruptedException {
+    void BadRequestTest() throws IOException, InterruptedException {
         String[] args = {"1256"};
         Launcher.main(args);
 
@@ -53,4 +53,10 @@ class UtilsTest {
 
     }
 
+    @Test
+    void CheckConsequenceTest() {
+        Assertions.assertThat(utils.CheckConsequence("miss")).isTrue();
+        Assertions.assertThat(utils.CheckConsequence("Miss")).isFalse();
+
+    }
 }

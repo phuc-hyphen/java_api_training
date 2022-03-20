@@ -4,11 +4,11 @@ import java.util.*;
 
 
 public class BattleField {
-    final Map<Cell, Boolean> porteAvionMap = new HashMap<Cell, Boolean>();
-    final Map<Cell, Boolean> croiseurMap = new HashMap<Cell, Boolean>();
-    final Map<Cell, Boolean> torpilleurMap = new HashMap<Cell, Boolean>();
-    final Map<Cell, Boolean> contreTorpilleurMap = new HashMap<Cell, Boolean>();
-    final Map<Cell, Boolean> contreTorpilleur2Map = new HashMap<Cell, Boolean>();
+    public final Map<Cell, Boolean> porteAvionMap = new HashMap<Cell, Boolean>();
+    public final Map<Cell, Boolean> croiseurMap = new HashMap<Cell, Boolean>();
+    public final Map<Cell, Boolean> torpilleurMap = new HashMap<Cell, Boolean>();
+    public final Map<Cell, Boolean> contreTorpilleurMap = new HashMap<Cell, Boolean>();
+    public final Map<Cell, Boolean> contreTorpilleur2Map = new HashMap<Cell, Boolean>();
     final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();
     final List<Map<Cell, Boolean>> sunkShips = new ArrayList<Map<Cell, Boolean>>();

@@ -58,11 +58,12 @@ public class GameClient {
         ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
+            if (!responseMap.shipLeft()) {
+                System.out.println("I'm win");
+//                System.exit(0);
+            }
         }
-        if (!responseMap.shipLeft()) {
-            System.out.println("you Win");
-            System.exit(0);
-        }
+
     }
 
 }

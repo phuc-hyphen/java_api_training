@@ -52,10 +52,10 @@ public class Utils {
     }
 
     public void Print_Ships(BattleField battleField) {
-        System.out.println("contreTorpilleurMap : " + battleField.contreTorpilleurMap);
-        System.out.println("croiseurMap : " + battleField.croiseurMap);
-        System.out.println("torpilleurMap : " + battleField.torpilleurMap);
-        System.out.println("porteAvionMap : " + battleField.porteAvionMap);
-        System.out.println("contreTorpilleur2Map : " + battleField.contreTorpilleur2Map);
+        System.out.println("Porte - Avion : " + battleField.porteAvionMap);
+        System.out.println("Croiseur : " + battleField.croiseurMap);
+        System.out.println("Torpilleur : " + battleField.torpilleurMap);
+        System.out.println("Contre - Torpilleur : " + battleField.contreTorpilleurMap);
+        System.out.println("Contre - Torpilleur2 : " + battleField.contreTorpilleur2Map);
     }
 }

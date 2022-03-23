@@ -28,8 +28,6 @@ public class BattleField {
 
     public boolean ShipLeft() {
         return sunkShips.size() != 5;
-//        return !porteAvionMap.containsValue(false) && !croiseurMap.containsValue(false) && !torpilleurMap.containsValue(false)
-//            && !contreTorpilleurMap.containsValue(false) && !contreTorpilleur2Map.containsValue(false);
     }
 
     //true : hit
@@ -57,11 +55,9 @@ public class BattleField {
         else if (IfCellHit(cell, contreTorpilleurMap))
             return true;
         return IfCellHit(cell, contreTorpilleur2Map);
-//        return  ||IfCellHit(cell, croiseurMap) || IfCellHit(cell, torpilleurMap) ||
-//            IfCellHit(cell, contreTorpilleurMap) || IfCellHit(cell, contreTorpilleur2Map);
     }
 
-    public boolean IfCellHit(Cell cell, Map<Cell, Boolean> ship) { // check if the cell hit the ship and get the received cell
+    private boolean IfCellHit(Cell cell, Map<Cell, Boolean> ship) { // check if the cell hit the ship and get the received cell
         boolean hit = false;
         if (ship.containsKey(cell) && !received.contains(cell)) {
             ship.replace(cell, false, true);
@@ -81,8 +77,6 @@ public class BattleField {
         if (IfShipSunk(contreTorpilleurMap))
             return true;
         else return IfShipSunk(contreTorpilleur2Map);
-//        return IfShipSunk(porteAvionMap) || IfShipSunk(croiseurMap) ||
-//            IfShipSunk(torpilleurMap) || IfShipSunk(contreTorpilleurMap) || IfShipSunk(contreTorpilleur2Map);
     }
 
     private boolean IfShipSunk(Map<Cell, Boolean> ship) { // check if the ship is sunk

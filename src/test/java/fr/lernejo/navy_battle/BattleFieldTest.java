@@ -37,13 +37,13 @@ class BattleFieldTest {
         Assertions.assertThat(hit).isTrue();
     }
 
-    @Test
-    void IfCellHitTest() {
-        battleField.InitialSea();
-        Cell hitCell = new Cell(1, 4);
-        boolean hit = battleField.IfCellHit(hitCell, battleField.croiseurMap);
-        Assertions.assertThat(hit).isTrue();
-    }
+//    @Test
+//    void IfCellHitTest() {
+//        battleField.InitialSea();
+//        Cell hitCell = new Cell(1, 4);
+//        boolean hit = battleField.IfCellHit(hitCell, battleField.croiseurMap);
+//        Assertions.assertThat(hit).isTrue();
+//    }
 
     @Test
     void SunkCheckTest() {

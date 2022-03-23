@@ -3,7 +3,9 @@ package fr.lernejo.navy_battle;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -57,6 +59,26 @@ class UtilsTest {
     void CheckConsequenceTest() {
         Assertions.assertThat(utils.CheckConsequence("miss")).isTrue();
         Assertions.assertThat(utils.CheckConsequence("Miss")).isFalse();
-
     }
+
+    @Test
+    void PrintShipTest() {
+        // setting output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        PrintStream old = System.out;
+        System.setOut(ps);
+
+        BattleField battleField = new BattleField();
+        battleField.InitialSea();
+        utils.Print_Ships(battleField);
+
+        System.out.flush();
+        System.setOut(old);
+        Assertions.assertThat(baos.toString()).contains("Croiseur");
+        Assertions.assertThat(baos.toString()).contains("Torpilleur");
+        Assertions.assertThat(baos.toString()).contains("Porte - Avion");
+        Assertions.assertThat(baos.toString()).contains("Contre - Torpilleur");
+    }
+
 }

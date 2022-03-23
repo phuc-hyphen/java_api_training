@@ -14,7 +14,7 @@ public class BattleField {
     final List<Map<Cell, Boolean>> sunkShips = new ArrayList<Map<Cell, Boolean>>();
 
     public void InitialSea() {
-        Ship porteAvion = new Ship(new Cell(1, 3), 5, "Vertical");
+        Ship porteAvion = new Ship(new Cell(3, 1), 5, "Vertical");
         porteAvion.AddLocations(porteAvionMap);
         Ship croiseur = new Ship(new Cell(1, 1), 4, "Vertical");
         croiseur.AddLocations(croiseurMap);
@@ -36,22 +36,32 @@ public class BattleField {
     //false: miss
     public Cell GetRandomCell() { // get random cell
         Random rand = new Random();
+        int x, y;
         Cell cell;
         do {
-            int x = rand.nextInt(0, 10);
-            int y = rand.nextInt(0, 10);
+            x = rand.nextInt(0, 10);
+            y = rand.nextInt(0, 10);
             cell = new Cell(x, y);
-        } while (fired.contains(cell));
+        } while (fired.contains(cell) || x < 0 || y < 0);
         fired.add(cell);
         return cell;
     }
 
     public boolean HitCheck(Cell cell) { // check if the cell hit any ship
-        return IfCellHit(cell, porteAvionMap) || IfCellHit(cell, croiseurMap) || IfCellHit(cell, torpilleurMap) ||
-            IfCellHit(cell, contreTorpilleurMap) || IfCellHit(cell, contreTorpilleur2Map);
+        if (IfCellHit(cell, porteAvionMap))
+            return true;
+        else if (IfCellHit(cell, croiseurMap))
+            return true;
+        else if (IfCellHit(cell, torpilleurMap))
+            return true;
+        else if (IfCellHit(cell, contreTorpilleurMap))
+            return true;
+        return IfCellHit(cell, contreTorpilleur2Map);
+//        return  ||IfCellHit(cell, croiseurMap) || IfCellHit(cell, torpilleurMap) ||
+//            IfCellHit(cell, contreTorpilleurMap) || IfCellHit(cell, contreTorpilleur2Map);
     }
 
-    private boolean IfCellHit(Cell cell, Map<Cell, Boolean> ship) { // check if the cell hit the ship and get the received cell
+    public boolean IfCellHit(Cell cell, Map<Cell, Boolean> ship) { // check if the cell hit the ship and get the received cell
         boolean hit = false;
         if (ship.containsKey(cell) && !received.contains(cell)) {
             ship.replace(cell, false, true);

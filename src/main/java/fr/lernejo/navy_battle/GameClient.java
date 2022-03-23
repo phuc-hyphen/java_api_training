@@ -16,7 +16,6 @@ public class GameClient {
     public final BattleField battleField;
     public final Utils utils = new Utils();
     private final ObjectMapper objectMapper = new ObjectMapper();
-//    public boolean win;
 
     public GameClient(BattleField battleField) {
         this.battleField = battleField;
@@ -32,6 +31,7 @@ public class GameClient {
         HttpResponse<String> response = client.send(requestPost, HttpResponse.BodyHandlers.ofString());
         ExtractData(gameContext, response);
         battleField.InitialSea();
+//        battleField.Print_Ships();
     }
 
     private void ExtractData(Map<String, String> gameContext, HttpResponse<String> response) throws JsonProcessingException {
@@ -60,7 +60,8 @@ public class GameClient {
             System.out.println(responseMap);
         }
         if (!responseMap.shipLeft()) {
-            System.out.println("i'm Win");
+            System.out.println("you Win");
+            System.exit(0);
         }
     }
 

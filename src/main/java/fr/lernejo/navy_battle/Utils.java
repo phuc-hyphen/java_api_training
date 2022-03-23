@@ -26,7 +26,7 @@ public class Utils {
     public Cell getParamMap(String query) { // get cell
         if (query == null || query.isEmpty()) return null;
         String cell = query.substring(query.lastIndexOf("=") + 1, query.length());
-        return new Cell((int) cell.charAt(0) - 'A', Integer.parseInt(String.valueOf(cell.charAt(1))) - 1);//C7 ->  7th row, 3rd col
+        return new Cell((int) cell.charAt(0) - 'A', Integer.parseInt(String.valueOf(cell.charAt(1))));//C7 ->  7th row, 3rd col
     }
 
     public void BadRequest(HttpExchange exchange, boolean notFound) throws IOException {
@@ -49,5 +49,13 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public void Print_Ships(BattleField battleField) {
+        System.out.println("contreTorpilleurMap : " + battleField.contreTorpilleurMap);
+        System.out.println("croiseurMap : " + battleField.croiseurMap);
+        System.out.println("torpilleurMap : " + battleField.torpilleurMap);
+        System.out.println("porteAvionMap : " + battleField.porteAvionMap);
+        System.out.println("contreTorpilleur2Map : " + battleField.contreTorpilleur2Map);
     }
 }

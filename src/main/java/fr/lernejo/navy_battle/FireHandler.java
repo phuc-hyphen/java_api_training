@@ -31,14 +31,15 @@ public class FireHandler implements HttpHandler {
         if (client.battleField.ShipLeft()) {
             NextShot();
         } else {
-            System.out.println(gameContext.get("adv_url") + "win");
+            System.out.println("i'm win");
+            System.exit(0);
         }
     }
 
     private String getConsequence(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         Cell cell = client.utils.getParamMap(uri.toString());
-        System.out.println("received : " + cell);
+        System.out.println(" received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
             consequence = "hit";

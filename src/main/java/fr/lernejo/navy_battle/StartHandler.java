@@ -26,6 +26,7 @@ public class StartHandler implements HttpHandler {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
             client.battleField.InitialSea();
+//            client.battleField.Print_Ships();
             FirstShot();
         } else {
             client.utils.BadRequest(exchange, true);

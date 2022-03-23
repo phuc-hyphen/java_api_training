@@ -21,6 +21,7 @@ class BattleFieldTest {
 
     @Test
     void GetRandomCellTest() {
+        battleField.InitialSea();
         test_cell = battleField.GetRandomCell();
         System.out.println(test_cell);
 
@@ -30,13 +31,24 @@ class BattleFieldTest {
 
     @Test
     void HitCheckTest() {
-        Cell hitCell = new Cell(10, 10);
+        battleField.InitialSea();
+        Cell hitCell = new Cell(1, 4);
         boolean hit = battleField.HitCheck(hitCell);
-        Assertions.assertThat(hit).isFalse();
+        Assertions.assertThat(hit).isTrue();
     }
+
+    @Test
+    void IfCellHitTest() {
+        battleField.InitialSea();
+        Cell hitCell = new Cell(1, 4);
+        boolean hit = battleField.IfCellHit(hitCell, battleField.croiseurMap);
+        Assertions.assertThat(hit).isTrue();
+    }
+
     @Test
     void SunkCheckTest() {
-        if(battleField.porteAvionMap.isEmpty())
+        battleField.InitialSea();
+        if (battleField.porteAvionMap.isEmpty())
             battleField.InitialSea();
         boolean Sunk = battleField.SunkCheck();
         Assertions.assertThat(Sunk).isFalse();

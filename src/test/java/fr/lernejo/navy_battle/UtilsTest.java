@@ -30,7 +30,7 @@ class UtilsTest {
     void getParamMapTest() {
         Cell cell = utils.getParamMap("/api/game/fire?cell=F5");
         Assertions.assertThat(cell.col()).isEqualTo(5);
-        Assertions.assertThat(cell.row()).isEqualTo(4);
+        Assertions.assertThat(cell.row()).isEqualTo(5);
         Cell cell2 = utils.getParamMap("");
         Assertions.assertThat(cell2).isNull();
     }

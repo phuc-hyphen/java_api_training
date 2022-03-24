@@ -31,7 +31,6 @@ public class GameClient {
         HttpResponse<String> response = client.send(requestPost, HttpResponse.BodyHandlers.ofString());
         ExtractData(gameContext, response);
         battleField.InitialSea();
-//        battleField.Print_Ships();
     }
 
     private void ExtractData(Map<String, String> gameContext, HttpResponse<String> response) throws JsonProcessingException {
@@ -58,12 +57,17 @@ public class GameClient {
         ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
-            if (!responseMap.shipLeft()) {
+            if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
+//                System.exit(0);
+            } else if (responseMap.shipLeft() && !battleField.ShipLeft()) {// me out of ship ||| you still have some -> you win
+                System.out.println("you win");
+                System.exit(0);
+            } else if (!responseMap.shipLeft() && !battleField.ShipLeft()) {
+                System.out.println("we draw !! ");
 //                System.exit(0);
             }
         }
-
     }
 
 }

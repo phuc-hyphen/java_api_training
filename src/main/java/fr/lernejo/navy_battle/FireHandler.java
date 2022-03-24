@@ -12,7 +12,7 @@ import java.util.Map;
 public class FireHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-//    int count = 0;
+    int count = 0;
 
     public FireHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
@@ -21,28 +21,28 @@ public class FireHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-//        System.out.println("received");
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
-//            count += 1;
+            count += 1;
             String consequence = getConsequence(exchange);
             Response(exchange, consequence);
         } else {
             client.utils.BadRequest(exchange, true);
         }
-        if (client.battleField.ShipLeft()) {
-            NextShot();
-        } else {
-            System.out.println("You win");
-//            System.exit(0);
-        }
+        NextShot();
+//        if (client.battleField.ShipLeft()) {
+//        }
+//        else {
+//            System.out.println("You win");
+////            System.exit(0);
+//        }
     }
 
     private String getConsequence(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         Cell cell = client.utils.getParamMap(uri.toString());
-//        System.out.println(count + " " + "Received : " + cell);
-        System.out.println("Received : " + cell);
+        System.out.println(count + " " + "Received : " + cell);
+//        System.out.println("Received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
             consequence = "hit";
@@ -69,7 +69,8 @@ public class FireHandler implements HttpHandler {
         try {
             Thread.sleep(10);
             Cell nextShot = client.battleField.GetRandomCell();
-            System.out.println("Send : " + nextShot);
+            System.out.println(count + " " + "Send : " + nextShot);
+//            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {

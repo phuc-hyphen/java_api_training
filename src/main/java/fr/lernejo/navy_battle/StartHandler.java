@@ -26,7 +26,6 @@ public class StartHandler implements HttpHandler {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
             client.battleField.InitialSea();
-//            client.battleField.Print_Ships();
             FirstShot();
         } else {
             client.utils.BadRequest(exchange, true);
@@ -35,7 +34,7 @@ public class StartHandler implements HttpHandler {
 
     private void FirstShot() throws IOException {
         try {
-//            Thread.sleep(500);
+            Thread.sleep(10);
             Cell firstShot = client.battleField.GetRandomCell();
             String pos = client.utils.getCharForNumber(firstShot.col()) + firstShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);

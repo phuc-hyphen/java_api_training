@@ -9,9 +9,11 @@ public class BattleField {
     public final Map<Cell, Boolean> torpilleurMap = new HashMap<Cell, Boolean>();
     public final Map<Cell, Boolean> contreTorpilleurMap = new HashMap<Cell, Boolean>();
     public final Map<Cell, Boolean> contreTorpilleur2Map = new HashMap<Cell, Boolean>();
-    final List<Cell> fired = new ArrayList<Cell>();
+    public final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();
     final List<Map<Cell, Boolean>> sunkShips = new ArrayList<Map<Cell, Boolean>>();
+    public final List<ResponseMessageFire> responses = new ArrayList<ResponseMessageFire>();
+    final Utils utils = new Utils();
 
     public void InitialSea() {
         Ship porteAvion = new Ship(new Cell(3, 1), 5, "Vertical");
@@ -30,20 +32,24 @@ public class BattleField {
         return sunkShips.size() != 5;
     }
 
+    public Cell GetNextCell() {
+        if (!responses.isEmpty()) {
+            ResponseMessageFire lastResponse = responses.get(responses.size() - 1);
+            if (lastResponse.consequence().equals("hit")) {
+                Cell lastCell = fired.get(fired.size() - 1);
+                Cell nextCell = new Cell(lastCell.col(), lastCell.row() + 1);
+                if (!fired.contains(nextCell) && nextCell.row() > 0) {
+                    fired.add(nextCell);
+                    return nextCell;
+                }
+            }
+        }
+        return utils.GetRandomCell(fired);
+    }
+
     //true : hit
     //false: miss
-    public Cell GetRandomCell() { // get random cell
-        Random rand = new Random();
-        int x, y;
-        Cell cell;
-        do {
-            x = rand.nextInt(0, 10);
-            y = rand.nextInt(0, 10);
-            cell = new Cell(x, y);
-        } while (fired.contains(cell) || x < 0 || y < 0);
-        fired.add(cell);
-        return cell;
-    }
+
 
     public boolean HitCheck(Cell cell) { // check if the cell hit any ship
         if (IfCellHit(cell, porteAvionMap))

@@ -57,14 +57,9 @@ public class GameClient {
         ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
+            battleField.responses.add(responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
-//                System.exit(0);
-            } else if (responseMap.shipLeft() && !battleField.ShipLeft()) {// me out of ship ||| you still have some -> you win
-                System.out.println("you win");
-                System.exit(0);
-            } else if (!responseMap.shipLeft() && !battleField.ShipLeft()) {
-                System.out.println("we draw !! ");
 //                System.exit(0);
             }
         }

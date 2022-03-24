@@ -81,4 +81,14 @@ class UtilsTest {
         Assertions.assertThat(baos.toString()).contains("Contre - Torpilleur");
     }
 
+    @Test
+    void GetRandomCellTest() {
+        BattleField battleField = new BattleField();
+        battleField.InitialSea();
+        Cell test_cell = utils.GetRandomCell(battleField.fired);
+        System.out.println(test_cell);
+
+        Assertions.assertThat(test_cell.col()).isLessThan(10);
+        Assertions.assertThat(test_cell.row()).isLessThan(10);
+    }
 }

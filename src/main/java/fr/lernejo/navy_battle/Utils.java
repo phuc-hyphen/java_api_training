@@ -4,7 +4,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Utils {
     public void PrintInfo(Map<String, String> gameContext, String Mess) {
@@ -57,5 +59,18 @@ public class Utils {
         System.out.println("Torpilleur : " + battleField.torpilleurMap);
         System.out.println("Contre - Torpilleur : " + battleField.contreTorpilleurMap);
         System.out.println("Contre - Torpilleur2 : " + battleField.contreTorpilleur2Map);
+    }
+
+    public Cell GetRandomCell(List<Cell> fired) { // get random cell
+        Random rand = new Random();
+        int x, y;
+        Cell cell;
+        do {
+            x = rand.nextInt(0, 10);
+            y = rand.nextInt(0, 10);
+            cell = new Cell(x, y);
+        } while (fired.contains(cell) || x < 0 || y < 0);
+        fired.add(cell);
+        return cell;
     }
 }

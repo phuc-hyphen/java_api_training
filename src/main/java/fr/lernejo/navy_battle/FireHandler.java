@@ -29,12 +29,12 @@ public class FireHandler implements HttpHandler {
         } else {
             client.utils.BadRequest(exchange, true);
         }
-        if (client.battleField.ShipLeft()) {
-            NextShot();
-        } else {
-            System.out.println("You win");
-//            System.exit(0);
-        }
+        NextShot();
+//        if (client.battleField.ShipLeft()) {
+//        } else {
+//            System.out.println("You win");
+////            System.exit(0);
+//        }
     }
 
     private String getConsequence(HttpExchange exchange) {

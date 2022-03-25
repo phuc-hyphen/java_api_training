@@ -49,8 +49,6 @@ public class BattleField {
 
     //true : hit
     //false: miss
-
-
     public boolean HitCheck(Cell cell) { // check if the cell hit any ship
         if (IfCellHit(cell, porteAvionMap))
             return true;

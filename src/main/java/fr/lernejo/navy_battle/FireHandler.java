@@ -29,12 +29,12 @@ public class FireHandler implements HttpHandler {
         } else {
             client.utils.BadRequest(exchange, true);
         }
-        NextShot();
-//        if (client.battleField.ShipLeft()) {
-//        } else {
-//            System.out.println("You win");
-////            System.exit(0);
-//        }
+        if (client.battleField.ShipLeft()) {
+            NextShot();
+        } else {
+            System.out.println("You win");
+//            System.exit(0);
+        }
     }
 
     private String getConsequence(HttpExchange exchange) {
@@ -66,7 +66,7 @@ public class FireHandler implements HttpHandler {
 
     private void NextShot() throws IOException {
         try {
-            Thread.sleep(10);
+            Thread.sleep(2000);
             Cell nextShot = client.battleField.GetNextCell();
 //            System.out.println(count + " " + "Send : " + nextShot);
             System.out.println("Send : " + nextShot);

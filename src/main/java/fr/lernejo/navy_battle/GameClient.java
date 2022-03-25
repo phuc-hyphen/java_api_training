@@ -61,10 +61,11 @@ public class GameClient {
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
                 System.exit(0);
-            } else if (responseMap.shipLeft() && !battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
-                System.out.println("you win");
-                System.exit(0);
             }
+//            else if (responseMap.shipLeft() && !battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
+//                System.out.println("you win");
+//                System.exit(0);
+//            }
         }
     }
 

@@ -33,7 +33,7 @@ public class FireHandler implements HttpHandler {
             NextShot();
         } else {
             System.out.println("You win");
-//            System.exit(0);
+            System.exit(0);
         }
     }
 
@@ -66,7 +66,7 @@ public class FireHandler implements HttpHandler {
 
     private void NextShot() throws IOException {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(10);
             Cell nextShot = client.battleField.GetNextCell();
 //            System.out.println(count + " " + "Send : " + nextShot);
             System.out.println("Send : " + nextShot);

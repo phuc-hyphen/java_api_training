@@ -12,7 +12,6 @@ import java.util.Map;
 public class FireHandler implements HttpHandler {
     private final Map<String, String> gameContext;
     private final GameClient client;
-    int count = 0;
 
     public FireHandler(Map<String, String> gameContext, GameClient client) {
         this.gameContext = gameContext;
@@ -23,7 +22,6 @@ public class FireHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
-            count += 1;
             String consequence = getConsequence(exchange);
             Response(exchange, consequence);
         } else {
@@ -40,7 +38,7 @@ public class FireHandler implements HttpHandler {
     private String getConsequence(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         Cell cell = client.utils.getParamMap(uri.toString());
-        System.out.println(count + " " + "Received : " + cell);
+        System.out.println(client.battleField.navalMap.size() + " " + "Received : " + cell);
 //        System.out.println("Received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
@@ -55,9 +53,9 @@ public class FireHandler implements HttpHandler {
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         boolean shipleft = client.battleField.ShipLeft();
-//        if (count == 43) {
-//            shipleft = false;
-//        }
+        if (client.battleField.navalMap.size() == 43) {
+            shipleft = false;
+        }
         ResponseMessageFire map = new ResponseMessageFire(consequence, shipleft);
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Accept", "application/json");
@@ -72,7 +70,7 @@ public class FireHandler implements HttpHandler {
         try {
             Thread.sleep(10);
             Cell nextShot = client.battleField.GetNextCell();
-            System.out.println(count + " " + "Send : " + nextShot);
+            System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
 //            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);

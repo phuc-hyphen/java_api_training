@@ -16,7 +16,6 @@ public class GameClient {
     public final BattleField battleField;
     public final Utils utils = new Utils();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    int count = 0;
 
 
     public GameClient(BattleField battleField) {
@@ -44,8 +43,7 @@ public class GameClient {
     }
 
     public void FireClient(String adv_url, String pos) throws IOException, InterruptedException {
-        System.out.println(count);
-        count += 1;
+        System.out.println(battleField.navalMap.size());
         HttpRequest getRequest = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/fire?cell=" + pos))
             .setHeader("Accept", "application/json")
@@ -61,15 +59,12 @@ public class GameClient {
         ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
-            battleField.responses.add(responseMap);
+            battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), responseMap);
+//            battleField.AddPositionStatus(responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
                 System.exit(0);
             }
-//            else if (responseMap.shipLeft() && !battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
-//                System.out.println("you win");
-//                System.exit(0);
-//            }
         }
     }
 

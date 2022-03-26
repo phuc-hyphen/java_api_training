@@ -29,7 +29,7 @@ class BattleFieldTest {
         Assertions.assertThat(test_cell.row()).isLessThan(10);
 
         ResponseMessageFire fire = new ResponseMessageFire("hit", true);
-        battleField.responses.add(fire);
+        battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), fire);
         Cell testCell2 = battleField.GetNextCell();
         Assertions.assertThat(testCell2.col()).isEqualTo(test_cell.col());
         Assertions.assertThat(testCell2.row()).isEqualTo(test_cell.row() + 1);

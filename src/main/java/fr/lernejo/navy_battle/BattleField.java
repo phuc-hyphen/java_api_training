@@ -9,10 +9,11 @@ public class BattleField {
     public final Map<Cell, Boolean> torpilleurMap = new HashMap<Cell, Boolean>();
     public final Map<Cell, Boolean> contreTorpilleurMap = new HashMap<Cell, Boolean>();
     public final Map<Cell, Boolean> contreTorpilleur2Map = new HashMap<Cell, Boolean>();
+    public final Map<Cell, ResponseMessageFire> navalMap = new HashMap<Cell, ResponseMessageFire>();
     public final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();
     final List<Map<Cell, Boolean>> sunkShips = new ArrayList<Map<Cell, Boolean>>();
-    public final List<ResponseMessageFire> responses = new ArrayList<ResponseMessageFire>();
+    //    public final List<ResponseMessageFire> responses = new ArrayList<ResponseMessageFire>();
     final Utils utils = new Utils();
 
     public void InitialSea() {
@@ -32,11 +33,20 @@ public class BattleField {
         return sunkShips.size() != 5;
     }
 
+    private Cell GetLastHitCell() {
+        Cell cell = null;
+        for (Map.Entry<Cell, ResponseMessageFire> it : navalMap.entrySet()) {
+            if (Objects.equals(it.getValue().consequence(), "hit")) {
+                cell = it.getKey();
+            }
+        }
+        return cell;
+    }
+
     public Cell GetNextCell() {
-        if (!responses.isEmpty()) {
-            ResponseMessageFire lastResponse = responses.get(responses.size() - 1);
-            if (lastResponse.consequence().equals("hit")) {
-                Cell lastCell = fired.get(fired.size() - 1);
+        if (!navalMap.isEmpty()) {
+            Cell lastCell = GetLastHitCell();
+            if (lastCell != null) {
                 Cell nextCell = new Cell(lastCell.col(), lastCell.row() + 1);
                 if (!fired.contains(nextCell) && nextCell.row() > 0) {
                     fired.add(nextCell);

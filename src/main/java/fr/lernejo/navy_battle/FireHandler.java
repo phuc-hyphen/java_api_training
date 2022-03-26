@@ -55,9 +55,9 @@ public class FireHandler implements HttpHandler {
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         boolean shipleft = client.battleField.ShipLeft();
-        if (count == 43) {
-            shipleft = false;
-        }
+//        if (count == 43) {
+//            shipleft = false;
+//        }
         ResponseMessageFire map = new ResponseMessageFire(consequence, shipleft);
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Accept", "application/json");

@@ -51,15 +51,15 @@ public class GameClient {
             .GET()
             .build();
         HttpResponse<String> response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
-        ResponseAnalyse(response);
+        ResponseAnalyse(response, pos);
     }
 
-    private void ResponseAnalyse(HttpResponse<String> response) throws JsonProcessingException {
+    private void ResponseAnalyse(HttpResponse<String> response, String pos) throws JsonProcessingException {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
-            battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), responseMap);
+            battleField.navalMap.put(new Cell((int) pos.charAt(0) - 'A', Integer.parseInt(String.valueOf(pos.charAt(1)))), responseMap);
 //            battleField.AddPositionStatus(responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");

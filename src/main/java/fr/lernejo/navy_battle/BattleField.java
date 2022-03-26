@@ -35,9 +35,11 @@ public class BattleField {
 
     private Cell GetLastHitCell() {
         Cell cell = null;
-        for (Map.Entry<Cell, ResponseMessageFire> it : navalMap.entrySet()) {
-            if (Objects.equals(it.getValue().consequence(), "hit")) {
-                cell = it.getKey();
+        if (!navalMap.isEmpty()) {
+            for (Map.Entry<Cell, ResponseMessageFire> it : navalMap.entrySet()) {
+                if (Objects.equals(it.getValue().consequence(), "hit")) {
+                    cell = it.getKey();
+                }
             }
         }
         return cell;
@@ -48,7 +50,7 @@ public class BattleField {
             Cell lastCell = GetLastHitCell();
             if (lastCell != null) {
                 Cell nextCell = new Cell(lastCell.col(), lastCell.row() + 1);
-                if (!fired.contains(nextCell) && nextCell.row() > 0) {
+                if (!fired.contains(nextCell) && 0 < nextCell.row() && nextCell.row() < 9) {
                     fired.add(nextCell);
                     return nextCell;
                 }

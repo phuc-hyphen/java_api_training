@@ -29,11 +29,11 @@ public class FireHandler implements HttpHandler {
         } else {
             client.utils.BadRequest(exchange, true);
         }
-        NextShot();
-        if (!client.battleField.ShipLeft()) {
+        if (client.battleField.ShipLeft()) {
+            NextShot();
+        } else {
             System.out.println("You win");
-//        } else {
-//            System.exit(0);
+            System.exit(0);
         }
     }
 
@@ -54,7 +54,11 @@ public class FireHandler implements HttpHandler {
 
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResponseMessageFire map = new ResponseMessageFire(consequence, client.battleField.ShipLeft());
+        boolean shipleft = client.battleField.ShipLeft();
+        if (count == 43) {
+            shipleft = false;
+        }
+        ResponseMessageFire map = new ResponseMessageFire(consequence, shipleft);
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Accept", "application/json");
         exchange.getResponseHeaders().add("Content-type", "application/json");
@@ -68,8 +72,8 @@ public class FireHandler implements HttpHandler {
         try {
             Thread.sleep(10);
             Cell nextShot = client.battleField.GetNextCell();
-//            System.out.println(count + " " + "Send : " + nextShot);
-            System.out.println("Send : " + nextShot);
+            System.out.println(count + " " + "Send : " + nextShot);
+//            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {

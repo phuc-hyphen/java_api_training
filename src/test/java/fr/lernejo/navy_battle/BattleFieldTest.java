@@ -55,10 +55,21 @@ class BattleFieldTest {
     @Test
     void SunkCheckTest() {
         battleField.InitialSea();
-        if (battleField.porteAvionMap.isEmpty())
-            battleField.InitialSea();
         boolean Sunk = battleField.SunkCheck();
         Assertions.assertThat(Sunk).isFalse();
+        Cell cell1 = new Cell(8, 8);
+        battleField.torpilleurMap.replace(cell1, false, true);
+        Cell cell2 = new Cell(9, 8);
+        battleField.torpilleurMap.replace(cell2, false, true);
+        Assertions.assertThat(battleField.SunkCheck()).isFalse();
     }
+
+    @Test
+    void ShipLeftTest() {
+        battleField.InitialSea();
+        boolean shipLeft = battleField.ShipLeft();
+        Assertions.assertThat(shipLeft).isTrue();
+    }
+
 
 }

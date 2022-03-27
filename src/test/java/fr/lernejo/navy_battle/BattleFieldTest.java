@@ -22,7 +22,7 @@ class BattleFieldTest {
     @Test
     void GetNextCellTest() {
         battleField.InitialSea();
-        test_cell = battleField.GetNextCell();
+        test_cell = battleField.GetNextShot();
         System.out.println(test_cell);
 
         Assertions.assertThat(test_cell.col()).isLessThan(10);
@@ -30,7 +30,7 @@ class BattleFieldTest {
 
         ResponseMessageFire fire = new ResponseMessageFire("hit", true);
         battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), fire);
-        Cell testCell2 = battleField.GetNextCell();
+        Cell testCell2 = battleField.GetNextShot();
         Assertions.assertThat(testCell2.col()).isEqualTo(test_cell.col());
         Assertions.assertThat(testCell2.row()).isEqualTo(test_cell.row() + 1);
 

@@ -35,7 +35,7 @@ public class StartHandler implements HttpHandler {
     private void FirstShot() throws IOException {
         try {
             Thread.sleep(10);
-            Cell firstShot = client.battleField.GetNextCell();
+            Cell firstShot = client.battleField.GetNextShot();
             String pos = client.utils.getCharForNumber(firstShot.col()) + firstShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException e) {

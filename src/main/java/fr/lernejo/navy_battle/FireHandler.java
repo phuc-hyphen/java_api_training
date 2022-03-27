@@ -53,9 +53,9 @@ public class FireHandler implements HttpHandler {
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         boolean shipleft = client.battleField.ShipLeft();
-        if (client.battleField.navalMap.size() == 53) {
-            shipleft = false;
-        }
+//        if (client.battleField.navalMap.size() == 53) {
+//            shipleft = false;
+//        }
         ResponseMessageFire map = new ResponseMessageFire(consequence, shipleft);
         String json = mapper.writeValueAsString(map);
         exchange.getResponseHeaders().add("Accept", "application/json");
@@ -69,7 +69,7 @@ public class FireHandler implements HttpHandler {
     private void NextShot() throws IOException {
         try {
             Thread.sleep(10);
-            Cell nextShot = client.battleField.GetNextCell();
+            Cell nextShot = client.battleField.GetNextShot();
             System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
 //            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();

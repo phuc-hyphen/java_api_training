@@ -26,14 +26,16 @@ public class BattleField {
         contreTorpilleur.AddLocations(contreTorpilleurMap);
         Ship contreTorpilleur2 = new Ship(new Cell(5, 5), 3, "Horizontal");
         contreTorpilleur2.AddLocations(contreTorpilleur2Map);
+        cellGetter.AddGoodPositions(porteAvionMap, croiseurMap, torpilleurMap, contreTorpilleurMap, contreTorpilleur2Map);
     }
 
     public boolean ShipLeft() {
         return sunkShips.size() != 5;
     }
 
-    public Cell GetNextCell() {
-        return cellGetter.GetCellStander(navalMap, fired);
+    public Cell GetNextShot() {
+//        return cellGetter.GetCellStanderWay(navalMap, fired);
+        return cellGetter.GetCellTactic(fired);
     }
 
     //true : hit - false: miss

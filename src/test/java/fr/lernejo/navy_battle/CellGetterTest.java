@@ -19,4 +19,14 @@ class CellGetterTest {
         Assertions.assertThat(test_cell.row()).isLessThan(10);
     }
 
+    @Test
+    void GetCellTacticTest() {
+        BattleField battleField = new BattleField();
+        battleField.InitialSea();
+        Cell test_cell = cellGetter.GetCellTactic(battleField.fired);
+        System.out.println(test_cell);
+        Assertions.assertThat(test_cell.col()).isLessThan(10);
+        Assertions.assertThat(test_cell.row()).isLessThan(10);
+
+    }
 }

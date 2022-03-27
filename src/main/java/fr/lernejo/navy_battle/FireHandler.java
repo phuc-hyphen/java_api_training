@@ -53,7 +53,7 @@ public class FireHandler implements HttpHandler {
     private void Response(HttpExchange exchange, String consequence) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         boolean shipleft = client.battleField.ShipLeft();
-        if (client.battleField.navalMap.size() == 43) {
+        if (client.battleField.navalMap.size() == 53) {
             shipleft = false;
         }
         ResponseMessageFire map = new ResponseMessageFire(consequence, shipleft);

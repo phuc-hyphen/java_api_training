@@ -13,8 +13,7 @@ public class BattleField {
     public final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();
     final List<Map<Cell, Boolean>> sunkShips = new ArrayList<Map<Cell, Boolean>>();
-    //    public final List<ResponseMessageFire> responses = new ArrayList<ResponseMessageFire>();
-    final Utils utils = new Utils();
+    final CellGetter cellGetter = new CellGetter();
 
     public void InitialSea() {
         Ship porteAvion = new Ship(new Cell(3, 1), 5, "Vertical");
@@ -33,34 +32,11 @@ public class BattleField {
         return sunkShips.size() != 5;
     }
 
-    private Cell GetLastHitCell() {
-        Cell cell = null;
-        if (!navalMap.isEmpty()) {
-            for (Map.Entry<Cell, ResponseMessageFire> it : navalMap.entrySet()) {
-                if (Objects.equals(it.getValue().consequence(), "hit")) {
-                    cell = it.getKey();
-                }
-            }
-        }
-        return cell;
-    }
-
     public Cell GetNextCell() {
-        if (!navalMap.isEmpty()) {
-            Cell lastCell = GetLastHitCell();
-            if (lastCell != null) {
-                Cell nextCell = new Cell(lastCell.col(), lastCell.row() + 1);
-                if (!fired.contains(nextCell) && 0 < nextCell.row() && nextCell.row() < 9) {
-                    fired.add(nextCell);
-                    return nextCell;
-                }
-            }
-        }
-        return utils.GetRandomCell(fired);
+        return cellGetter.GetCellStander(navalMap, fired);
     }
 
-    //true : hit
-    //false: miss
+    //true : hit - false: miss
     public boolean HitCheck(Cell cell) { // check if the cell hit any ship
         if (IfCellHit(cell, porteAvionMap))
             return true;

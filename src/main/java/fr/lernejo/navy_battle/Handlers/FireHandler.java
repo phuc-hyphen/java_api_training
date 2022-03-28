@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class FireHandler implements HttpHandler {
     private final Map<String, String> gameContext;
@@ -41,7 +43,7 @@ public class FireHandler implements HttpHandler {
     private String getConsequence(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         Cell cell = client.utils.getParamMap(uri.toString());
-        System.out.println(client.battleField.navalMap.size() + " " + "Received : " + cell);
+//        System.out.println(client.battleField.navalMap.size() + " " + "Received : " + cell);
 //        System.out.println("Received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
@@ -71,13 +73,13 @@ public class FireHandler implements HttpHandler {
 
     private void NextShot() throws IOException {
         try {
-            Thread.sleep(0);
+//            Thread.sleep(0);
             Cell nextShot = client.battleField.GetNextShot();
-            System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
+//            System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
 //            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         }
     }

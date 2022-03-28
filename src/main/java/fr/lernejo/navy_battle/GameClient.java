@@ -24,7 +24,6 @@ public class GameClient {
     public final Utils utils = new Utils();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
     public GameClient(BattleField battleField) {
         this.battleField = battleField;
     }
@@ -47,10 +46,10 @@ public class GameClient {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         StartMessage jsonMap = objectMapper.readValue(response, StartMessage.class);
         gameContext.put("adv_id", jsonMap.id());
-        utils.PrintInfo(gameContext, jsonMap.message());
+//        utils.PrintInfo(gameContext, jsonMap.message());
     }
 
-    public void FireClient(String adv_url, String pos) throws IOException, InterruptedException {
+    public void FireClient(String adv_url, String pos) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         System.out.println(battleField.navalMap.size());
         HttpRequest getRequest = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/fire?cell=" + pos))
@@ -58,17 +57,17 @@ public class GameClient {
             .setHeader("Content-Type", "application/json")
             .GET()
             .build();
-        HttpResponse<String> response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
-        ResponseAnalyse(response, pos);
+        CompletableFuture<HttpResponse<String>> response = client.sendAsync(getRequest, HttpResponse.BodyHandlers.ofString());
+        String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        ResponseAnalyse(result, pos);
     }
 
-    private void ResponseAnalyse(HttpResponse<String> response, String pos) throws JsonProcessingException {
+    private void ResponseAnalyse(String response, String pos) throws JsonProcessingException {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        ResponseMessageFire responseMap = objectMapper.readValue(response.body(), ResponseMessageFire.class);
+        ResponseMessageFire responseMap = objectMapper.readValue(response, ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
-            System.out.println(responseMap);
+//            System.out.println(responseMap);
             battleField.navalMap.put(new Cell((int) pos.charAt(0) - 'A', Integer.parseInt(String.valueOf(pos.charAt(1)))), responseMap);
-//            battleField.AddPositionStatus(responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
                 System.exit(0);

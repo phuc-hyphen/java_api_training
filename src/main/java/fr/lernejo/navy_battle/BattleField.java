@@ -29,7 +29,7 @@ public class BattleField {
         contreTorpilleur.AddLocations(contreTorpilleurMap);
         Ship contreTorpilleur2 = new Ship(new Cell(5, 5), 3, "Horizontal");
         contreTorpilleur2.AddLocations(contreTorpilleur2Map);
-        cellGetter.AddGoodPositions(porteAvionMap, croiseurMap, torpilleurMap, contreTorpilleurMap, contreTorpilleur2Map);
+//        cellGetter.AddGoodPositions(porteAvionMap, croiseurMap, torpilleurMap, contreTorpilleurMap, contreTorpilleur2Map);
     }
 
     public boolean ShipLeft() {
@@ -37,8 +37,8 @@ public class BattleField {
     }
 
     public Cell GetNextShot() {
-//        return cellGetter.GetCellStanderWay(navalMap, fired);
-        return cellGetter.GetCellTactic(fired);
+        return cellGetter.GetCellStanderWay(navalMap, fired);
+//        return cellGetter.GetCellTactic(fired);
     }
 
     //true : hit - false: miss

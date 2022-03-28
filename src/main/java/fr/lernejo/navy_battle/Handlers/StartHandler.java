@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class StartHandler implements HttpHandler {
     private final Map<String, String> gameContext;
@@ -37,11 +39,11 @@ public class StartHandler implements HttpHandler {
 
     private void FirstShot() throws IOException {
         try {
-            Thread.sleep(10);
+//            Thread.sleep(10);
             Cell firstShot = client.battleField.GetNextShot();
             String pos = client.utils.getCharForNumber(firstShot.col()) + firstShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         }
     }
@@ -55,7 +57,7 @@ public class StartHandler implements HttpHandler {
             String message = jsonMap.message();
             gameContext.put("adv_id", jsonMap.id());
             gameContext.put("adv_url", jsonMap.url());
-            client.utils.PrintInfo(gameContext, message);
+//            client.utils.PrintInfo(gameContext, message);
         } catch (IOException e) {
             client.utils.BadRequest(exchange, false);
         }
@@ -70,6 +72,4 @@ public class StartHandler implements HttpHandler {
             os.write(json.getBytes());
         }
     }
-
-
 }

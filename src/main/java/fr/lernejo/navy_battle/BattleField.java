@@ -29,7 +29,7 @@ public class BattleField {
         contreTorpilleur.AddLocations(contreTorpilleurMap);
         Ship contreTorpilleur2 = new Ship(new Cell(5, 5), 3, "Horizontal");
         contreTorpilleur2.AddLocations(contreTorpilleur2Map);
-//        cellGetter.AddGoodPositions(porteAvionMap, croiseurMap, torpilleurMap, contreTorpilleurMap, contreTorpilleur2Map);
+        cellGetter.AddGoodPositions(porteAvionMap, croiseurMap, torpilleurMap, contreTorpilleurMap, contreTorpilleur2Map);
     }
 
     public boolean ShipLeft() {

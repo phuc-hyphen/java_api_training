@@ -57,7 +57,7 @@ public class StartHandler implements HttpHandler {
             String message = jsonMap.message();
             gameContext.put("adv_id", jsonMap.id());
             gameContext.put("adv_url", jsonMap.url());
-//            client.utils.PrintInfo(gameContext, message);
+            client.utils.PrintInfo(gameContext, message);
         } catch (IOException e) {
             client.utils.BadRequest(exchange, false);
         }

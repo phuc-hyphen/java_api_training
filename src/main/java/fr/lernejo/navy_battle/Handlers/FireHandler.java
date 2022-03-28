@@ -44,7 +44,7 @@ public class FireHandler implements HttpHandler {
         URI uri = exchange.getRequestURI();
         Cell cell = client.utils.getParamMap(uri.toString());
 //        System.out.println(client.battleField.navalMap.size() + " " + "Received : " + cell);
-//        System.out.println("Received : " + cell);
+        System.out.println("Received : " + cell);
         String consequence = "miss";
         if (client.battleField.HitCheck(cell)) {
             consequence = "hit";
@@ -76,7 +76,7 @@ public class FireHandler implements HttpHandler {
 //            Thread.sleep(0);
             Cell nextShot = client.battleField.GetNextShot();
 //            System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
-//            System.out.println("Send : " + nextShot);
+            System.out.println("Send : " + nextShot);
             String pos = client.utils.getCharForNumber(nextShot.col()) + nextShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

@@ -46,7 +46,7 @@ public class GameClient {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         StartMessage jsonMap = objectMapper.readValue(response, StartMessage.class);
         gameContext.put("adv_id", jsonMap.id());
-//        utils.PrintInfo(gameContext, jsonMap.message());
+        utils.PrintInfo(gameContext, jsonMap.message());
     }
 
     public void FireClient(String adv_url, String pos) throws IOException, InterruptedException, ExecutionException, TimeoutException {
@@ -66,7 +66,7 @@ public class GameClient {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ResponseMessageFire responseMap = objectMapper.readValue(response, ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
-//            System.out.println(responseMap);
+            System.out.println(responseMap);
             battleField.navalMap.put(new Cell((int) pos.charAt(0) - 'A', Integer.parseInt(String.valueOf(pos.charAt(1)))), responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");

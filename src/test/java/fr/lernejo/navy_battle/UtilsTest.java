@@ -11,6 +11,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 class UtilsTest {
     Utils utils = new Utils();
@@ -39,7 +41,7 @@ class UtilsTest {
     }
 
     @Test
-    void BadRequestTest() throws IOException, InterruptedException {
+    void BadRequestTest() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         String[] args = {"1256"};
         Launcher.main(args);
 

@@ -19,14 +19,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameClientTest {
     @Test
-    void StartGameTest() throws IOException, InterruptedException {
+    void StartGameTest() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         // setting output
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);

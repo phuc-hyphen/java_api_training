@@ -14,6 +14,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 
 class LauncherTest {
@@ -38,6 +40,8 @@ class LauncherTest {
 
         } catch (IOException e) {
             test = e;
+        } catch (ExecutionException | TimeoutException e) {
+            e.printStackTrace();
         }
 
         Assertions.assertThat(test).isNotNull();
@@ -49,7 +53,7 @@ class LauncherTest {
     }
 
     @Test
-    void PingTests() throws IOException, InterruptedException {
+    void PingTests() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         String[] args = {"9876"};
         Launcher.main(args);
         HttpClient client = HttpClient.newHttpClient();
@@ -62,7 +66,7 @@ class LauncherTest {
     }
 
     @Test
-    void StartTests() throws IOException, InterruptedException {
+    void StartTests() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         String[] args = {"1234"};
         String my_id = "TEst.IT";
         String my_port = "8765";

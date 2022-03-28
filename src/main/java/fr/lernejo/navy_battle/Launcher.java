@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 public class Launcher {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         final Map<String, String> gameContext = new HashMap<String, String>();
         final GameClient gameClient = new GameClient(new BattleField());
         if (args.length < 1) {
@@ -31,7 +31,12 @@ public class Launcher {
 
     private static void StartServer(int port, Map<String, String> gameContext, GameClient client) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = new java.util.concurrent.ThreadPoolExecutor(
+            1,
+            1,
+            60L,
+            java.util.concurrent.TimeUnit.SECONDS,
+            new java.util.concurrent.LinkedBlockingQueue<Runnable>());
         server.createContext("/ping", new PingHandler());
         server.createContext("/api/game/start", new StartHandler(gameContext, client));
         server.createContext("/api/game/fire", new FireHandler(gameContext, client));

@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 class FireHandlerTest {
 
     @Test
-    void Fire_handlerTest() throws IOException, InterruptedException {
+    void Fire_handlerTest() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         // setting output
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);

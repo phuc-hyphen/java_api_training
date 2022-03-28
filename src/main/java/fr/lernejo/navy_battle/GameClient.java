@@ -13,6 +13,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class GameClient {
     private final HttpClient client = HttpClient.newHttpClient();
@@ -25,22 +29,23 @@ public class GameClient {
         this.battleField = battleField;
     }
 
-    public void StartGame(String adv_url, Map<String, String> gameContext) throws IOException, InterruptedException {
+    public void StartGame(String adv_url, Map<String, String> gameContext) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         HttpRequest requestPost = HttpRequest.newBuilder()
             .uri(URI.create(adv_url + "/api/game/start"))
             .setHeader("Accept", "application/json")
             .setHeader("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString("{\"id\":\"" + gameContext.get("my_id") + "\", \"url\":\"http://localhost:" + gameContext.get("my_port") + "\", \"message\":\"Let's play !\"}"))
             .build();
-        HttpResponse<String> response = client.send(requestPost, HttpResponse.BodyHandlers.ofString());
-        ExtractData(gameContext, response);
+        CompletableFuture<HttpResponse<String>> response = client.sendAsync(requestPost, HttpResponse.BodyHandlers.ofString());
+        String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+        ExtractData(gameContext, result);
         battleField.InitialSea();
     }
 
-    private void ExtractData(Map<String, String> gameContext, HttpResponse<String> response) throws JsonProcessingException {
+    private void ExtractData(Map<String, String> gameContext, String response) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        StartMessage jsonMap = objectMapper.readValue(response.body(), StartMessage.class);
+        StartMessage jsonMap = objectMapper.readValue(response, StartMessage.class);
         gameContext.put("adv_id", jsonMap.id());
         utils.PrintInfo(gameContext, jsonMap.message());
     }

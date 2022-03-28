@@ -3,6 +3,9 @@ package fr.lernejo.navy_battle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.lernejo.navy_battle.Recorders.Cell;
+import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
+import fr.lernejo.navy_battle.Recorders.StartMessage;
 
 import java.io.IOException;
 import java.net.URI;

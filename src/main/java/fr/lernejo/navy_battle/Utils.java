@@ -1,13 +1,11 @@
 package fr.lernejo.navy_battle;
 
 import com.sun.net.httpserver.HttpExchange;
+import fr.lernejo.navy_battle.Recorders.Cell;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
 
 public class Utils {
     public void PrintInfo(Map<String, String> gameContext, String Mess) {

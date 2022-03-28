@@ -1,9 +1,9 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.Recorders.Cell;
+import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CellGetterTest {
     final CellGetter cellGetter = new CellGetter();

@@ -1,8 +1,11 @@
-package fr.lernejo.navy_battle;
+package fr.lernejo.navy_battle.Handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import fr.lernejo.navy_battle.Recorders.Cell;
+import fr.lernejo.navy_battle.GameClient;
+import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,7 +71,7 @@ public class FireHandler implements HttpHandler {
 
     private void NextShot() throws IOException {
         try {
-            Thread.sleep(10);
+            Thread.sleep(0);
             Cell nextShot = client.battleField.GetNextShot();
             System.out.println(client.battleField.navalMap.size() + " " + "Send : " + nextShot);
 //            System.out.println("Send : " + nextShot);

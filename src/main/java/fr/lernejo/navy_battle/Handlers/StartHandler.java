@@ -1,9 +1,12 @@
-package fr.lernejo.navy_battle;
+package fr.lernejo.navy_battle.Handlers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import fr.lernejo.navy_battle.Recorders.Cell;
+import fr.lernejo.navy_battle.GameClient;
+import fr.lernejo.navy_battle.Recorders.StartMessage;
 
 import java.io.IOException;
 import java.io.InputStream;

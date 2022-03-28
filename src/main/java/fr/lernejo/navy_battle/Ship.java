@@ -1,5 +1,7 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.Recorders.Cell;
+
 import java.util.Map;
 
 public class Ship {

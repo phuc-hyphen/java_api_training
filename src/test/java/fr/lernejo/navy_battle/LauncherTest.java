@@ -2,6 +2,7 @@ package fr.lernejo.navy_battle;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.lernejo.navy_battle.Recorders.StartMessage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

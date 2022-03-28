@@ -1,5 +1,8 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.Recorders.Cell;
+import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
+
 import java.util.*;
 
 

@@ -3,6 +3,8 @@ package fr.lernejo.navy_battle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.lernejo.navy_battle.GamePlay.BattleField;
+import fr.lernejo.navy_battle.GamePlay.Utils;
 import fr.lernejo.navy_battle.Recorders.Cell;
 import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 import fr.lernejo.navy_battle.Recorders.StartMessage;
@@ -38,7 +40,7 @@ public class GameClient {
         CompletableFuture<HttpResponse<String>> response = client.sendAsync(requestPost, HttpResponse.BodyHandlers.ofString());
         String result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         ExtractData(gameContext, result);
-        battleField.InitialSea();
+//        battleField.InitialSea();
     }
 
     private void ExtractData(Map<String, String> gameContext, String response) throws JsonProcessingException {

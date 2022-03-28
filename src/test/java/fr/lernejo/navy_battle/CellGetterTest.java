@@ -1,5 +1,7 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.GamePlay.BattleField;
+import fr.lernejo.navy_battle.GamePlay.CellGetter;
 import fr.lernejo.navy_battle.Recorders.Cell;
 import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 import org.assertj.core.api.Assertions;
@@ -14,7 +16,7 @@ class CellGetterTest {
     @Test
     void GetRandomCellTest() {
         BattleField battleField = new BattleField();
-        battleField.InitialSea();
+//        battleField.InitialSea();
         Cell test_cell = cellGetter.GetRandomCell(battleField.fired);
         System.out.println(test_cell);
 
@@ -25,7 +27,7 @@ class CellGetterTest {
     @Test
     void GetCellTacticTest() {
         BattleField battleField = new BattleField();
-        battleField.InitialSea();
+//        battleField.InitialSea();
         Cell test_cell = cellGetter.GetCellTactic(battleField.fired);
         System.out.println(test_cell);
         Assertions.assertThat(test_cell.col()).isLessThan(10);
@@ -36,7 +38,7 @@ class CellGetterTest {
     @Test
     void AddGoodPositionsTest() {
         BattleField battleField = new BattleField();
-        battleField.InitialSea();
+//        battleField.InitialSea();
         Assertions.assertThat(battleField.cellGetter.goodPositions.size()).isEqualTo(17);
     }
 

@@ -1,4 +1,4 @@
-package fr.lernejo.navy_battle;
+package fr.lernejo.navy_battle.GamePlay;
 
 import com.sun.net.httpserver.HttpExchange;
 import fr.lernejo.navy_battle.Recorders.Cell;
@@ -53,11 +53,11 @@ public class Utils {
     }
 
     public void Print_Ships(BattleField battleField) {
-        System.out.println("Porte - Avion : " + battleField.porteAvionMap);
-        System.out.println("Croiseur : " + battleField.croiseurMap);
-        System.out.println("Torpilleur : " + battleField.torpilleurMap);
-        System.out.println("Contre - Torpilleur : " + battleField.contreTorpilleurMap);
-        System.out.println("Contre - Torpilleur2 : " + battleField.contreTorpilleur2Map);
+        System.out.println("Porte - Avion : " + battleField.porteAvion.mapShip);
+        System.out.println("Croiseur : " + battleField.croiseur.mapShip);
+        System.out.println("Torpilleur : " + battleField.torpilleur.mapShip);
+        System.out.println("Contre - Torpilleur : " + battleField.contreTorpilleur.mapShip);
+        System.out.println("Contre - Torpilleur2 : " + battleField.contreTorpilleur2.mapShip);
     }
 
 

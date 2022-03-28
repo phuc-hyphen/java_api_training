@@ -1,4 +1,4 @@
-package fr.lernejo.navy_battle;
+package fr.lernejo.navy_battle.GamePlay;
 
 import fr.lernejo.navy_battle.Recorders.Cell;
 import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
@@ -6,7 +6,7 @@ import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 import java.util.*;
 
 public class CellGetter {
-    final List<Cell> goodPositions = new ArrayList<Cell>();
+    public final List<Cell> goodPositions = new ArrayList<Cell>();
 
     public void AddGoodPositions(Map<Cell, Boolean> ship1, Map<Cell, Boolean> ship3, Map<Cell, Boolean> ship2, Map<Cell, Boolean> ship4, Map<Cell, Boolean> ship5) {
         for (Map.Entry<Cell, Boolean> it : ship1.entrySet()) {
@@ -93,5 +93,4 @@ public class CellGetter {
         }
         return GetRandomCell(fired);
     }
-
 }

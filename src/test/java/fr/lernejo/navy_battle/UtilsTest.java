@@ -1,5 +1,7 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.GamePlay.BattleField;
+import fr.lernejo.navy_battle.GamePlay.Utils;
 import fr.lernejo.navy_battle.Recorders.Cell;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,7 +75,7 @@ class UtilsTest {
         System.setOut(ps);
 
         BattleField battleField = new BattleField();
-        battleField.InitialSea();
+//        battleField.InitialSea();
         utils.Print_Ships(battleField);
 
         System.out.flush();

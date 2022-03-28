@@ -1,30 +1,16 @@
 package fr.lernejo.navy_battle;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+import fr.lernejo.navy_battle.GamePlay.BattleField;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameClientTest {
     @Test

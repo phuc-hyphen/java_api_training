@@ -1,6 +1,7 @@
 package fr.lernejo.navy_battle;
 
 import com.sun.net.httpserver.HttpServer;
+import fr.lernejo.navy_battle.GamePlay.BattleField;
 import fr.lernejo.navy_battle.Handlers.FireHandler;
 import fr.lernejo.navy_battle.Handlers.PingHandler;
 import fr.lernejo.navy_battle.Handlers.StartHandler;

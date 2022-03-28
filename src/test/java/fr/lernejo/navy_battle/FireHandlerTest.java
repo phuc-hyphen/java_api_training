@@ -1,5 +1,6 @@
 package fr.lernejo.navy_battle;
 
+import fr.lernejo.navy_battle.GamePlay.BattleField;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

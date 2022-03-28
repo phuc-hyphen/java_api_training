@@ -30,7 +30,7 @@ public class StartHandler implements HttpHandler {
         if (method.equals("POST")) {
             CheckAndGetData(exchange);
             Response(exchange, gameContext.get("my_id"), gameContext.get("my_port"));
-            client.battleField.InitialSea();
+//            client.battleField.InitialSea();
             FirstShot();
         } else {
             client.utils.BadRequest(exchange, true);

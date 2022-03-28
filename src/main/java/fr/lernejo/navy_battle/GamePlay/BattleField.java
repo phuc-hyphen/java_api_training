@@ -12,7 +12,6 @@ public class BattleField {
     public final Ship torpilleur = new Ship(new Cell(8, 8), 2, "Vertical");
     public final Ship contreTorpilleur = new Ship(new Cell(0, 9), 3, "Horizontal");
     public final Ship contreTorpilleur2 = new Ship(new Cell(5, 5), 3, "Horizontal");
-
     public final Map<Cell, ResponseMessageFire> navalMap = new HashMap<Cell, ResponseMessageFire>();
     public final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();
@@ -22,13 +21,20 @@ public class BattleField {
     public BattleField() {
         cellGetter.AddGoodPositions(porteAvion.mapShip, croiseur.mapShip, torpilleur.mapShip, contreTorpilleur.mapShip, contreTorpilleur2.mapShip);
     }
+
     public boolean ShipLeft() {
         return sunkShips.size() != 5;
     }
 
+    public Cell GetFirstShot() {
+        Cell firstShot = new Cell(5, 5);
+        fired.add(firstShot);
+        return firstShot;
+    }
+
     public Cell GetNextShot() {
-        return cellGetter.GetCellStanderWay(navalMap, fired);
-//        return cellGetter.GetCellTactic(fired);
+//        return cellGetter.GetCellRandomWay(navalMap, fired);
+        return cellGetter.GetCellTactic(fired);
     }
 
     //true : hit - false: miss

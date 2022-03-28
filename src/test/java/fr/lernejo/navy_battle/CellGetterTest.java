@@ -59,7 +59,7 @@ class CellGetterTest {
     void GetCellStanderWayTest_miss() {
         BattleField battleField = new BattleField();
 
-        test_cell = cellGetter.GetCellStanderWay(battleField.navalMap, battleField.fired);
+        test_cell = cellGetter.GetCellRandomWay(battleField.navalMap, battleField.fired);
         Assertions.assertThat(test_cell.col()).isLessThan(10);
         Assertions.assertThat(test_cell.row()).isLessThan(10);
     }
@@ -72,7 +72,7 @@ class CellGetterTest {
         ResponseMessageFire fire = new ResponseMessageFire("hit", true);
         battleField.navalMap.put(cell, fire);
 
-        test_cell = cellGetter.GetCellStanderWay(battleField.navalMap, battleField.fired);
+        test_cell = cellGetter.GetCellRandomWay(battleField.navalMap, battleField.fired);
         Assertions.assertThat(test_cell.col()).isEqualTo(cell.col());
         Assertions.assertThat(test_cell.row()).isEqualTo(cell.row() + 1);
     }

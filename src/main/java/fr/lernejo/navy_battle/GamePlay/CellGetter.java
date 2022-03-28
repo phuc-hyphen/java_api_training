@@ -51,7 +51,7 @@ public class CellGetter {
         return cell;
     }
 
-    public Cell GetCellStanderWay(Map<Cell, ResponseMessageFire> map, List<Cell> fired) {
+    public Cell GetCellRandomWay(Map<Cell, ResponseMessageFire> map, List<Cell> fired) { // 90
         if (!map.isEmpty()) {
             Cell lastCell = GetLastHitCell(map);
             if (lastCell != null) {
@@ -65,23 +65,14 @@ public class CellGetter {
     }
 
     public Cell GetNearbyCell(Cell originCell, List<Cell> fired) {
-        Cell nextCellDown = getCell(originCell, fired, 0, 1);
+        Cell nextCellDown = originCell.getCell(originCell, fired, 0, 1);
         if (nextCellDown != null) return nextCellDown;
-        Cell nextCellUp = getCell(originCell, fired, 0, -1);
+        Cell nextCellUp = originCell.getCell(originCell, fired, 0, -1);
         if (nextCellUp != null) return nextCellUp;
-        Cell nextCellRight = getCell(originCell, fired, 1, 0);
+        Cell nextCellRight = originCell.getCell(originCell, fired, 1, 0);
         if (nextCellRight != null) return nextCellRight;
-        return getCell(originCell, fired, -1, 0);
+        return originCell.getCell(originCell, fired, -1, 0);
 //        return null;
-    }
-
-    private Cell getCell(Cell originCell, List<Cell> fired, int col_shift, int row_shift) {
-        Cell nextCell = new Cell(originCell.col() + col_shift, originCell.row() + row_shift);
-        if (!fired.contains(nextCell) && 0 <= nextCell.row() && nextCell.row() <= 9 && 0 <= nextCell.col() && nextCell.col() <= 9) {
-            fired.add(nextCell);
-            return nextCell;
-        }
-        return null;
     }
 
     public Cell GetCellTactic(List<Cell> fired) {

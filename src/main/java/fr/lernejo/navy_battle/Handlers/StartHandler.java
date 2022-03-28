@@ -40,7 +40,7 @@ public class StartHandler implements HttpHandler {
     private void FirstShot() throws IOException {
         try {
 //            Thread.sleep(10);
-            Cell firstShot = client.battleField.GetNextShot();
+            Cell firstShot = client.battleField.GetFirstShot();
             String pos = client.utils.getCharForNumber(firstShot.col()) + firstShot.row();
             client.FireClient(gameContext.get("adv_url"), pos);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

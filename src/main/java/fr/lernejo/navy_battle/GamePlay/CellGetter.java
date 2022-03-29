@@ -6,28 +6,38 @@ import fr.lernejo.navy_battle.Recorders.ResponseMessageFire;
 import java.util.*;
 
 public class CellGetter {
-    public final List<Cell> goodPositions = new ArrayList<Cell>();
+    public final List<Cell> myMap = new ArrayList<Cell>();
+    public final List<Cell> croixCells = new ArrayList<Cell>();
+    public final List<String> consequences = new ArrayList<String>();
+    public final List<Cell> hitMap = new ArrayList<Cell>();
+    final Random rand = new Random();
+
+    public CellGetter() {
+        for (int i = 0; i < 10; i++) {
+            croixCells.add(new Cell(i, i));
+            croixCells.add(new Cell(9 - i, i));
+        }
+    }
 
     public void AddGoodPositions(Map<Cell, Boolean> ship1, Map<Cell, Boolean> ship3, Map<Cell, Boolean> ship2, Map<Cell, Boolean> ship4, Map<Cell, Boolean> ship5) {
         for (Map.Entry<Cell, Boolean> it : ship1.entrySet()) {
-            goodPositions.add(it.getKey());
+            myMap.add(it.getKey());
         }
         for (Map.Entry<Cell, Boolean> it : ship2.entrySet()) {
-            goodPositions.add(it.getKey());
+            myMap.add(it.getKey());
         }
         for (Map.Entry<Cell, Boolean> it : ship3.entrySet()) {
-            goodPositions.add(it.getKey());
+            myMap.add(it.getKey());
         }
         for (Map.Entry<Cell, Boolean> it : ship4.entrySet()) {
-            goodPositions.add(it.getKey());
+            myMap.add(it.getKey());
         }
         for (Map.Entry<Cell, Boolean> it : ship5.entrySet()) {
-            goodPositions.add(it.getKey());
+            myMap.add(it.getKey());
         }
     }
 
     public Cell GetRandomCell(List<Cell> fired) { // get random cell
-        Random rand = new Random();
         int x, y;
         Cell cell;
         do {
@@ -39,49 +49,38 @@ public class CellGetter {
         return cell;
     }
 
-    public Cell GetLastHitCell(Map<Cell, ResponseMessageFire> map) {
-        Cell cell = null;
-        if (!map.isEmpty()) {
-            for (Map.Entry<Cell, ResponseMessageFire> it : map.entrySet()) {
-                if (Objects.equals(it.getValue().consequence(), "hit")) {
-                    cell = it.getKey();
-                }
-            }
+    public Cell GetRandomCell2(List<Cell> fired) {
+        if (!croixCells.isEmpty()) {
+            int index = rand.nextInt(croixCells.size());
+            Cell cell = croixCells.get(index);
+            croixCells.remove(index);
+            fired.add(cell);
+            return cell;
         }
-        return cell;
+        return GetRandomCell(fired);
     }
+
 
     public Cell GetCellRandomWay(Map<Cell, ResponseMessageFire> map, List<Cell> fired) { // 90
         if (!map.isEmpty()) {
-            Cell lastCell = GetLastHitCell(map);
-            if (lastCell != null) {
-                Cell nextCell = GetNearbyCell(lastCell, fired);
+            if (!hitMap.isEmpty()) {
+                Cell nextCell = hitMap.get(hitMap.size() - 1).GetNearbyCell(fired);
                 if (nextCell != null) {
                     return nextCell;
                 }
             }
         }
-        return GetRandomCell(fired);
+        return GetRandomCell2(fired);
     }
 
-    public Cell GetNearbyCell(Cell originCell, List<Cell> fired) {
-        Cell nextCellDown = originCell.getCell(originCell, fired, 0, 1);
-        if (nextCellDown != null) return nextCellDown;
-        Cell nextCellUp = originCell.getCell(originCell, fired, 0, -1);
-        if (nextCellUp != null) return nextCellUp;
-        Cell nextCellRight = originCell.getCell(originCell, fired, 1, 0);
-        if (nextCellRight != null) return nextCellRight;
-        return originCell.getCell(originCell, fired, -1, 0);
-//        return null;
-    }
-
-    public Cell GetCellTactic(List<Cell> fired) {
-        for (Cell position : goodPositions) {
+    public Cell GetCellTactic(List<Cell> fired) {//17
+        for (Cell position : myMap) {
             if (!fired.contains(position)) {
                 fired.add(position);
                 return position;
             }
         }
-        return GetRandomCell(fired);
+        return GetRandomCell2(fired);
     }
+
 }

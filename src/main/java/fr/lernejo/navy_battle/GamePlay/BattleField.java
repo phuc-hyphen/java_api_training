@@ -33,8 +33,9 @@ public class BattleField {
     }
 
     public Cell GetNextShot() {
-//        return cellGetter.GetCellRandomWay(navalMap, fired);
-        return cellGetter.GetCellTactic(fired);
+        return cellGetter.GetCellRandomWay(navalMap, fired);
+//        return cellGetter.GetCellRandomWay2(navalMap, fired);
+//        return cellGetter.GetCellTactic(fired);
     }
 
     //true : hit - false: miss

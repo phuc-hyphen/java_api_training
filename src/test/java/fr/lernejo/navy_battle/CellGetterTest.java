@@ -16,7 +16,6 @@ class CellGetterTest {
     @Test
     void GetRandomCellTest() {
         BattleField battleField = new BattleField();
-//        battleField.InitialSea();
         Cell test_cell = cellGetter.GetRandomCell(battleField.fired);
         System.out.println(test_cell);
 
@@ -27,7 +26,6 @@ class CellGetterTest {
     @Test
     void GetCellTacticTest() {
         BattleField battleField = new BattleField();
-//        battleField.InitialSea();
         Cell test_cell = cellGetter.GetCellTactic(battleField.fired);
         System.out.println(test_cell);
         Assertions.assertThat(test_cell.col()).isLessThan(10);
@@ -38,22 +36,21 @@ class CellGetterTest {
     @Test
     void AddGoodPositionsTest() {
         BattleField battleField = new BattleField();
-//        battleField.InitialSea();
-        Assertions.assertThat(battleField.cellGetter.goodPositions.size()).isEqualTo(17);
+        Assertions.assertThat(battleField.cellGetter.myMap.size()).isEqualTo(17);
     }
 
-    @Test
-    void GetLastHitCellTest() {
-        BattleField battleField = new BattleField();
-
-        test_cell = battleField.GetNextShot();
-        ResponseMessageFire fire = new ResponseMessageFire("hit", true);
-        battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), fire);
-
-        Cell testCell2 = cellGetter.GetLastHitCell(battleField.navalMap);
-        Assertions.assertThat(testCell2.col()).isEqualTo(test_cell.col());
-        Assertions.assertThat(testCell2.row()).isEqualTo(test_cell.row());
-    }
+//    @Test
+//    void GetLastHitCellTest() {
+//        BattleField battleField = new BattleField();
+//
+//        test_cell = battleField.GetNextShot();
+//        ResponseMessageFire fire = new ResponseMessageFire("hit", true);
+//        battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), fire);
+//
+//        Cell testCell2 = cellGetter.GetLastHitCell(battleField.navalMap, "hit");
+//        Assertions.assertThat(testCell2.col()).isEqualTo(test_cell.col());
+//        Assertions.assertThat(testCell2.row()).isEqualTo(test_cell.row());
+//    }
 
     @Test
     void GetCellStanderWayTest_miss() {
@@ -81,25 +78,31 @@ class CellGetterTest {
     void GetNearbyCellTest() {
         battleField.fired.add(cellOrigin);
         System.out.println(battleField.fired);
-        Cell down = cellGetter.GetNearbyCell(cellOrigin, battleField.fired);
+        Cell down = cellOrigin.GetNearbyCell(battleField.fired);
         battleField.fired.add(down);
         Assertions.assertThat(down.col()).isEqualTo(cellOrigin.col());
         Assertions.assertThat(down.row()).isEqualTo(cellOrigin.row() + 1);
 
         System.out.println(battleField.fired);
-        Cell up = cellGetter.GetNearbyCell(cellOrigin, battleField.fired);
-        Assertions.assertThat(up.col()).isEqualTo(cellOrigin.col());
-        Assertions.assertThat(up.row()).isEqualTo(cellOrigin.row() - 1);
-
-        System.out.println(battleField.fired);
-        Cell right = cellGetter.GetNearbyCell(cellOrigin, battleField.fired);
+        Cell right = cellOrigin.GetNearbyCell(battleField.fired);
         Assertions.assertThat(right.col()).isEqualTo(cellOrigin.col() + 1);
         Assertions.assertThat(right.row()).isEqualTo(cellOrigin.row());
 
         System.out.println(battleField.fired);
-        Cell left = cellGetter.GetNearbyCell(cellOrigin, battleField.fired);
+        Cell up = cellOrigin.GetNearbyCell(battleField.fired);
+        Assertions.assertThat(up.col()).isEqualTo(cellOrigin.col());
+        Assertions.assertThat(up.row()).isEqualTo(cellOrigin.row() - 1);
+
+        System.out.println(battleField.fired);
+        Cell left = cellOrigin.GetNearbyCell(battleField.fired);
         Assertions.assertThat(left.col()).isEqualTo(cellOrigin.col() - 1);
         Assertions.assertThat(left.row()).isEqualTo(cellOrigin.row());
+    }
+
+    @Test
+    void constructorTEEst() {
+        System.out.println(cellGetter.croixCells);
+        Assertions.assertThat(cellGetter.croixCells.size()).isEqualTo(20);
 
     }
 }

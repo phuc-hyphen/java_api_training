@@ -69,11 +69,23 @@ public class GameClient {
         ResponseMessageFire responseMap = objectMapper.readValue(response, ResponseMessageFire.class);
         if (utils.CheckConsequence(responseMap.consequence())) {
             System.out.println(responseMap);
-            battleField.navalMap.put(new Cell((int) pos.charAt(0) - 'A', Integer.parseInt(String.valueOf(pos.charAt(1)))), responseMap);
+            AnalyseConsequence(pos, responseMap);
             if (!responseMap.shipLeft() && battleField.ShipLeft()) { // you out of ship ||| me still have some -> i'm win
                 System.out.println("I'm win");
                 System.exit(0);
             }
+        }
+    }
+
+    private void AnalyseConsequence(String pos, ResponseMessageFire responseMap) {
+        Cell cell = new Cell((int) pos.charAt(0) - 'A', Integer.parseInt(String.valueOf(pos.charAt(1))));
+        battleField.navalMap.put(cell, responseMap);
+        battleField.cellGetter.consequences.add(responseMap.consequence());
+        if (responseMap.consequence().equals("hit")) {
+            battleField.cellGetter.hitMap.add(cell);
+        }
+        if (responseMap.consequence().equals("sunk")) {
+            battleField.cellGetter.hitMap.clear();
         }
     }
 

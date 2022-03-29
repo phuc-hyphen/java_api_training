@@ -15,7 +15,6 @@ class CellGetterTest {
 
     @Test
     void GetRandomCellTest() {
-        BattleField battleField = new BattleField();
         Cell test_cell = cellGetter.GetRandomCell(battleField.fired);
         System.out.println(test_cell);
 
@@ -25,7 +24,6 @@ class CellGetterTest {
 
     @Test
     void GetCellTacticTest() {
-        BattleField battleField = new BattleField();
         Cell test_cell = cellGetter.GetCellTactic(battleField.fired);
         System.out.println(test_cell);
         Assertions.assertThat(test_cell.col()).isLessThan(10);
@@ -35,27 +33,11 @@ class CellGetterTest {
 
     @Test
     void AddGoodPositionsTest() {
-        BattleField battleField = new BattleField();
         Assertions.assertThat(battleField.cellGetter.myMap.size()).isEqualTo(17);
     }
 
-//    @Test
-//    void GetLastHitCellTest() {
-//        BattleField battleField = new BattleField();
-//
-//        test_cell = battleField.GetNextShot();
-//        ResponseMessageFire fire = new ResponseMessageFire("hit", true);
-//        battleField.navalMap.put(battleField.fired.get(battleField.fired.size() - 1), fire);
-//
-//        Cell testCell2 = cellGetter.GetLastHitCell(battleField.navalMap, "hit");
-//        Assertions.assertThat(testCell2.col()).isEqualTo(test_cell.col());
-//        Assertions.assertThat(testCell2.row()).isEqualTo(test_cell.row());
-//    }
-
     @Test
     void GetCellStanderWayTest_miss() {
-        BattleField battleField = new BattleField();
-
         test_cell = cellGetter.GetCellRandomWay(battleField.navalMap, battleField.fired);
         Assertions.assertThat(test_cell.col()).isLessThan(10);
         Assertions.assertThat(test_cell.row()).isLessThan(10);
@@ -63,13 +45,15 @@ class CellGetterTest {
 
     @Test
     void GetCellStanderWayTest_hit() {
-        BattleField battleField = new BattleField();
         Cell cell = new Cell(1, 7);
         battleField.fired.add(cell);
         ResponseMessageFire fire = new ResponseMessageFire("hit", true);
         battleField.navalMap.put(cell, fire);
+        battleField.cellGetter.hitMap.add(cell);
+        battleField.cellGetter.consequences.add("hit");
 
-        test_cell = cellGetter.GetCellRandomWay(battleField.navalMap, battleField.fired);
+        test_cell = battleField.cellGetter.GetCellRandomWay(battleField.navalMap, battleField.fired);
+        System.out.println(test_cell);
         Assertions.assertThat(test_cell.col()).isEqualTo(cell.col());
         Assertions.assertThat(test_cell.row()).isEqualTo(cell.row() + 1);
     }

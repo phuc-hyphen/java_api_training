@@ -17,7 +17,7 @@ public class CellGetter {
             croixCells.add(new Cell(i, i));
 //            croixCells.add(new Cell(9 - i, i));
         }
-        croixCells.add(new Cell(9,0));
+        croixCells.add(new Cell(0, 9));
     }
 
     public void AddGoodPositions(Map<Cell, Boolean> ship1, Map<Cell, Boolean> ship3, Map<Cell, Boolean> ship2, Map<Cell, Boolean> ship4, Map<Cell, Boolean> ship5) {
@@ -53,6 +53,7 @@ public class CellGetter {
     public Cell GetRandomCell2(List<Cell> fired) {
         if (!croixCells.isEmpty()) {
             int index = rand.nextInt(croixCells.size());
+//            int index = 0;
             Cell cell = croixCells.get(index);
             croixCells.remove(index);
             fired.add(cell);

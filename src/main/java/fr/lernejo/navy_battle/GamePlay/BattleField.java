@@ -7,11 +7,11 @@ import java.util.*;
 
 
 public class BattleField {
-    public final Ship porteAvion = new Ship(new Cell(3, 1), 5, "Vertical");
+    public final Ship porteAvion = new Ship(new Cell(2, 2), 5, "Vertical");
     public final Ship croiseur = new Ship(new Cell(1, 1), 4, "Vertical");
-    public final Ship torpilleur = new Ship(new Cell(8, 8), 2, "Vertical");
+    public final Ship torpilleur = new Ship(new Cell(7, 7), 2, "Vertical");
     public final Ship contreTorpilleur = new Ship(new Cell(0, 9), 3, "Horizontal");
-    public final Ship contreTorpilleur2 = new Ship(new Cell(5, 5), 3, "Horizontal");
+    public final Ship contreTorpilleur2 = new Ship(new Cell(4, 4), 3, "Horizontal");
     public final Map<Cell, ResponseMessageFire> navalMap = new HashMap<Cell, ResponseMessageFire>();
     public final List<Cell> fired = new ArrayList<Cell>();
     final List<Cell> received = new ArrayList<Cell>();

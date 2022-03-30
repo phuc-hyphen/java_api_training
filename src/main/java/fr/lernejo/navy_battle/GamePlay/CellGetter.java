@@ -15,8 +15,9 @@ public class CellGetter {
     public CellGetter() {
         for (int i = 0; i < 10; i++) {
             croixCells.add(new Cell(i, i));
-            croixCells.add(new Cell(9 - i, i));
+//            croixCells.add(new Cell(9 - i, i));
         }
+        croixCells.add(new Cell(9,0));
     }
 
     public void AddGoodPositions(Map<Cell, Boolean> ship1, Map<Cell, Boolean> ship3, Map<Cell, Boolean> ship2, Map<Cell, Boolean> ship4, Map<Cell, Boolean> ship5) {

@@ -86,7 +86,7 @@ class CellGetterTest {
     @Test
     void constructorTEEst() {
         System.out.println(cellGetter.croixCells);
-        Assertions.assertThat(cellGetter.croixCells.size()).isEqualTo(20);
+        Assertions.assertThat(cellGetter.croixCells.size()).isEqualTo(11);
 
     }
 }
